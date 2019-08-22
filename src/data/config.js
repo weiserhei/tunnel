@@ -5,12 +5,12 @@ export default {
   maxAnisotropy: 8,
   dpr: 1,
   scene: {
-    background: 0x000000
+    background: 0x070707
   },
   fog: {
     // color: 0xFFAA00,
-    color: 0x000000,
-    near: 0.006,
+    color: 0x070707,
+    near: 0.008,
   },
   camera: {
     fov: 35,
@@ -111,7 +111,7 @@ export default {
     groundHColor: 0.5,
     groundSColor: 1,
     groundLColor: 0.5,
-    intensity: 0.04,
+    intensity: 0.06,
     x: 0,
     y: -1, // light direction top->down
     z: 0,

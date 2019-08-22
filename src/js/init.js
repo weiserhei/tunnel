@@ -1,28 +1,20 @@
 import * as THREE from 'three';
 import $ from "jquery";
-import TWEEN from '@tweenjs/tween.js';
-import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
+// import TWEEN from '@tweenjs/tween.js';
 
 import { icon } from '@fortawesome/fontawesome-svg-core'
 import { faRedoAlt, faSkullCrossbones, faBiohazard, faVolumeUp, faVolumeMute } from '@fortawesome/free-solid-svg-icons'
-
 
 import Controls from './classes/controls';
 import Renderer from './classes/renderer';
 import Camera from './classes/camera';
 import LightManager from './classes/lightManager';
-import dat from "dat.gui";
+import Player from './classes/player';
+import Block from './classes/block';
+// import dat from "dat.gui";
 
 import Config from './../data/config';
 import Models from './utils/models';
-
-import T_205_diffuse from "../textures/pattern_205/diffuse.jpg";
-import T_205_normal from "../textures/pattern_205/normal.jpg";
-import T_205_specular from "../textures/pattern_205/specular.jpg";
-
-import T_207_diffuse from "../textures/pattern_207/diffuse.jpg";
-import T_207_normal from "../textures/pattern_207/normal.jpg";
-import T_207_specular from "../textures/pattern_207/specular.jpg";
 
 import S_breaker from "../media/131599__modulationstation__kill-switch-large-breaker-switch.ogg";
 import S_zombi from "../media/326261__isaria__zombie-purr-2.wav";
@@ -59,16 +51,14 @@ export default function () {
     composer.addPass(effectPass2);
 
     const button = document.createElement("button");
-    // button.innerHTML = "come at me";
     button.innerHTML = icon(faSkullCrossbones, { classes: ["mr-2", "text-white"] }).html + "come at me";
     button.style.textShadow = "0 0 8px white";
     button.className = "btn btn-danger";
 
     const button2 = document.createElement("button");
     button2.innerHTML = icon(faRedoAlt, { classes: ["mr-2", "text-danger"] }).html + "rewind";
-    button2.style.textShadow = "0 0 8px black";
-    button2.className = "btn btn-light ml-1";
-    // $(button2).fadeOut(10);
+    button2.style.textShadow = "0 0 8px white";
+    button2.className = "btn btn-dark ml-1";
     $(button2).hide();
 
     const div = document.createElement("div");
@@ -78,7 +68,6 @@ export default function () {
     container.appendChild(div);
   
 	const lightManager = new LightManager(scene);
-	// Create and place lights in scene
     const lights = [
         // "directional",
         "hemi"
@@ -99,7 +88,6 @@ export default function () {
     const mute = icon(faVolumeMute, { classes: ["text-secondary"] }).html;
     container.appendChild(tray);
     tray.onclick = function() { 
-        const mvol = parseInt( listener.getMasterVolume() );
         if(this.toggle) { 
             this.toggle = false;
             listener.setMasterVolume(1); 
@@ -117,149 +105,13 @@ export default function () {
 	// GUI
     // const gui = new dat.GUI();
     // END GUI
-
-    const textureloader = new THREE.TextureLoader();
-
-    const width = 4;
-    const height = 2.5;
     const depth = 8;
-    const thickness = 0.2;
+    const block = new Block(depth);
 
-    const geometryFloor = new THREE.BoxGeometry(width,thickness,depth);
-    const geometryWall = new THREE.BoxGeometry(thickness,height,depth);
-    geometryWall.applyMatrix(new THREE.Matrix4().makeTranslation(width/2, height/2, 0));
-    const material = new THREE.MeshPhysicalMaterial({
-        color:0xFFFFFF,
-        map: textureloader.load(T_205_diffuse),
-        normalMap: textureloader.load(T_205_normal),
-        metalnessMap: textureloader.load(T_205_specular),
-        roughness: 0.4
-    });
-
-    material.map.wrapS = material.map.wrapT = THREE.RepeatWrapping;
-    material.map.repeat.set( 1, 1 );
-    material.map.anisotropy = 16;
-    material.normalMap.anisotropy = 16;
-    // geometry.applyMatrix( new THREE.Matrix4().makeRotationY( Math.PI / 2 ) );
-    geometryFloor.merge(geometryWall, geometryWall.matrix);
-    const geo2 = geometryFloor.clone();
-    geo2.applyMatrix(new THREE.Matrix4().makeRotationZ(Math.PI ));
-    geo2.applyMatrix(new THREE.Matrix4().makeTranslation(0, height, 0));
-    geometryFloor.merge(geo2, geo2.matrix);
-    // const geometry = geometryFloor.merge(geometryWall, geometryWall.matrix);
-    const tunnel = new THREE.Mesh(geometryFloor, material);
-    // scene.add(tunnel);
-    const lamp = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(1,0.05,0.1),
-        new THREE.MeshPhongMaterial({color:0xFFFFAA, emissive:0x666633})
-        );
-    lamp.position.set(0,height-thickness+0.1,0);
-    // scene.add(lamp);
-    // lamp.add( positionalAudio );
-    // positionalAudio.position.copy(lamp.position);
-
-    RectAreaLightUniformsLib.init();
-
-    const rectLight = new THREE.RectAreaLight( 0xFFFFAA, 8, 2, 0.5 );
-    rectLight.position.set( 0, height-thickness+0.01, 0 );
-    rectLight.rotation.set( -Math.PI / 2,0, 0);
-    // scene.add( rectLight );
-
-    // var rectLightMesh = new THREE.Mesh( new THREE.PlaneBufferGeometry(), new THREE.MeshBasicMaterial( { side: THREE.DoubleSide } ) );
-    // rectLightMesh.scale.x = rectLight.width;
-    // rectLightMesh.scale.y = rectLight.height;
-    // rectLight.add( rectLightMesh );
-
-    const block = new THREE.Object3D();
-    block.add( tunnel );
-    block.add( rectLight );
-    block.userData.lamp = lamp;
-    block.userData.light = rectLight;
-    block.add( lamp );
-    // scene.add( block);
-
-    function Player( tunneblocks ) {
-        const clock = new THREE.Clock();
-        let time = 0;
-        let current = undefined;
-        let blocks = tunneblocks.slice(0);
-        // blocks.forEach(block => block.children[2].material.emissive.setHex(0x111111));
-        let run = false;
-        let toggle = true;
-        this.reverse = function() {
-            toggle = !toggle;
-            this.reset();
-            // this.play();
-        }
-        this.play = function() {
-            // this.reset();
-            if( blocks.length > 0 ) {
-                run = true;
-                $(button).fadeOut();
-                $(button2).fadeOut();
-            }
-        }
-        
-        this.reset = function() {
-            // licht an
-            blocks = tunneblocks.slice(0);
-            // run = true;
-            // tunneblocks.forEach(block => {
-            //     block.children[1].intensity = 8;
-            //     block.children[2].material.emissive.setHex(0x666633)
-            // });
-        }
-
-        this.on = function(block) {
-            current.children[3].play();
-            current.children[2].material.emissive.setHex(0x666633);
-            current.children[1].intensity = 8;
-        }
-
-        this.off = function(block) {
-            current.children[3].play();
-            current.children[2].material.emissive.setHex(0x050505);
-            current.children[1].intensity = 0;
-        }
-        
-        this.update = function() {
-            time += clock.getDelta();
-            if( run && blocks.length > 0 ) {
-                if(time > 1) {
-                    current = blocks.pop();
-                    time = 0;
-                    // positionalAudio.position.copy(current.position);
-                    // positionalAudio.stop();
-                    // positionalAudio.play();
-                    if(toggle) {
-                        this.off(current);
-                    } else {
-                        this.on(current);
-                    }
-                    // this.on(current);
-                    if(blocks.length === 0) {
-                        const self = this;
-                        run = false;
-                        if( toggle ) {
-                            setTimeout( () => { current.children[4].play(); }, 500);
-                            setTimeout( () => { $(button2).fadeIn(); }, 6000);
-                        } else {
-                            this.reverse();
-                            $(button).fadeIn();
-                        }
-                        // current.children[4].play();
-                    }
-                    // current.userData.lamp.material.emissive.setHex(0x666633);
-                    // current.userData.lamp.materials[0].material.emissive.setHex(0x666633);
-                }
-            }
-        }
-    }
-    
     const blocks = [];
-    for(let i = 0; i<8; i++) {
+    for(let i = 0; i<6; i++) {
         const copy = block.clone();
-        copy.children[2].material = lamp.material.clone();
+        copy.children[2].material = block.children[2].material.clone();
         copy.position.z = depth * i;
         blocks.push(copy);
         scene.add( copy );
@@ -284,7 +136,7 @@ export default function () {
     });
 
     
-    const p = new Player(blocks);
+    const p = new Player(blocks, button, button2);
     // gui.add( p, "play");
     // gui.add( p, "reset");
 
@@ -348,7 +200,7 @@ export default function () {
     }
     
 	function update(delta) {
-        TWEEN.update();
+        // TWEEN.update();
         // controls.threeControls.update();
         p.update();
 
