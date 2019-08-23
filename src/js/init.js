@@ -1,18 +1,12 @@
-import * as THREE from 'three';
-// import TWEEN from '@tweenjs/tween.js';
-import Controls from './classes/controls';
-import Renderer from './classes/renderer';
-import Camera from './classes/camera';
-import InteractionController from './classes/interactionController';
-import LightManager from './classes/lightManager';
-import Block from './classes/block';
-
-import Config from './../data/config';
-
-import S_breaker from "../media/131599__modulationstation__kill-switch-large-breaker-switch.ogg";
-import S_zombi from "../media/326261__isaria__zombie-purr-2.wav";
-import S_alarm from "../media/435666__mirkosukovic__alarm-siren.wav";
-
+import {
+    AudioLoader,
+    AudioListener,
+    PositionalAudio,
+    Scene,
+    Clock,
+    Color,
+    FogExp2,
+} from 'three';
 import { 
     BloomEffect,
     VignetteEffect,
@@ -23,15 +17,28 @@ import {
     RenderPass
 } from "postprocessing";
 
+import Controls from './classes/controls';
+import Renderer from './classes/renderer';
+import Camera from './classes/camera';
+import InteractionController from './classes/interactionController';
+import LightManager from './classes/lightManager';
+import Block from './classes/block';
+
+import Config from './../data/config';
+import S_breaker from "../media/131599__modulationstation__kill-switch-large-breaker-switch.ogg";
+import S_zombi from "../media/326261__isaria__zombie-purr-2.wav";
+import S_alarm from "../media/435666__mirkosukovic__alarm-siren.wav";
+
+
 export default function () {
     
     const container = document.body;
-	const clock = new THREE.Clock();
+	const clock = new Clock();
     let delta = 0;
 
-	const scene = new THREE.Scene();
-	scene.background = new THREE.Color(Config.scene.background);
-	scene.fog = new THREE.FogExp2(Config.fog.color, Config.fog.near);
+	const scene = new Scene();
+	scene.background = new Color(Config.scene.background);
+	scene.fog = new FogExp2(Config.fog.color, Config.fog.near);
 
     const renderer = new Renderer(container);
 	const camera = new Camera(renderer.threeRenderer);
@@ -57,7 +64,7 @@ export default function () {
     ];
 	lights.forEach((light) => lightManager.place(light));
 
-    var listener = new THREE.AudioListener();
+    var listener = new AudioListener();
     camera.threeCamera.add( listener );
     // var sound = new THREE.Audio( listener );
 
@@ -66,62 +73,46 @@ export default function () {
 
     const blocks = [];
     for(let i = 0; i< c; i++) {
-        const block = new Block(i);
+        const block = new Block(i, listener);
         blocks.push(block);
         scene.add(block.mesh);
     }
     
     const ic = new InteractionController(container, listener, blocks);
-      
-	// GUI
-    // const gui = new dat.GUI();
-    // gui.add( ic, "play");
-    // gui.add( ic, "reset");
-    // END GUI
-    // const gui = document.createElement("div");
-    // gui.className = "position-absolute fixed-top card";
-    // container.appendChild(gui);
 
-    var audioLoader = new THREE.AudioLoader();
+    const audioLoader = new AudioLoader();
     audioLoader.load( S_breaker, function( buffer ) {
         blocks.forEach(block => {
-            const positionalAudio = new THREE.PositionalAudio( listener );
+            const positionalAudio = new PositionalAudio( listener );
             positionalAudio.setBuffer( buffer );
             positionalAudio.setRefDistance( 8 );
             block.addSound(positionalAudio);
         })
-        // sound.play();
     });
     audioLoader.load( S_zombi, function( buffer ) {
-        const positionalAudio = new THREE.PositionalAudio( listener );
+        const positionalAudio = new PositionalAudio( listener );
         positionalAudio.setBuffer( buffer );
         positionalAudio.setRefDistance( 8 );
         positionalAudio.setVolume( 4 );
         blocks[0].addBonusSound(positionalAudio);
-        // sound.play();
     });
     audioLoader.load( S_alarm, function( buffer ) {
-        var positionalAudio = new THREE.PositionalAudio( listener );
-        positionalAudio.setBuffer( buffer );
-        positionalAudio.setRefDistance( 8 );
-        positionalAudio.setVolume( 0.2 );
-        positionalAudio.setLoop( true );
-        blocks[blocks.length-1].addBonusSound(positionalAudio);
-
-        var positionalAudio = new THREE.PositionalAudio( listener );
-        positionalAudio.setBuffer( buffer );
-        positionalAudio.setRefDistance( 8 );
-        positionalAudio.setVolume( 0.5 );
-        positionalAudio.setLoop( true );
-        blocks[0].addBonusSound(positionalAudio);
-        // sound.play();
+        blocks.forEach( (block, index) => {
+            // every X blocks there is an alarm light
+            if( index % 3 === 0) {
+                const positionalAudio = new PositionalAudio( listener );
+                positionalAudio.setBuffer( buffer );
+                positionalAudio.setRefDistance( 4 );
+                positionalAudio.setVolume( 0.2 );
+                positionalAudio.setLoop( true );
+                block.addBonusSound(positionalAudio);
+            }
+        });
     });
     
 	function update(delta) {
-        // TWEEN.update();
         ic.update(delta);
         controls.update();
-        // x.userData.update(delta);
 	}
 
 	function animate() {

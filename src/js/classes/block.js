@@ -6,13 +6,9 @@ import {
     MeshPhysicalMaterial,
     MeshPhongMaterial,
     Mesh,
-    BoxBufferGeometry,
     RepeatWrapping,
-    RectAreaLight,
     Object3D,
     DoubleSide,
-    PlaneBufferGeometry,
-    MeshBasicMaterial
 } from "three";
 
 import TurnLight from "./turnLight";
@@ -69,17 +65,16 @@ export default class Block {
         tunnel.updateMatrix();
         // scene.add(tunnel);
 
-
         const block = new Object3D();
         block.position.set(0, 0, counter * depth);
         block.matrixAutoUpdate = false;
         block.updateMatrix();
-
         block.add( tunnel );
         // scene.add( block);
         this.mesh = block;
 
         let turnLight;
+        // add every X blocks an alarm light
         if( counter % 3 === 0) {
             turnLight = new TurnLight(block, counter);
             turnLight.off();
