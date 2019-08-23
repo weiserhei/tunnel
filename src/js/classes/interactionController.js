@@ -43,14 +43,15 @@ export default class InteractionController {
             faSkullCrossbones, 
             // { styles: { color: "#fff", filter:"drop-shadow(0px 0px 5px rgba(255,255,255,1))" }}, 
             { classes: ["mr-2", "text-white"] }
-            ).html+ " Whos there?";
+            ).html+ "Anybody here?";
         button.style.textShadow = "0 0 8px white";
         button.className = "btn btn-danger btn-lg";
 
         const button2 = document.createElement("button");
-        button2.innerHTML = icon(faRedoAlt, { classes: ["mr-2", "text-danger"] }).html + "rewind";
+        button2.innerHTML = icon(faRedoAlt, { classes: ["mr-2", "fa-sm", "text-primary"] }).html + "restart";
         button2.style.textShadow = "0 0 8px white";
-        button2.className = "btn btn-dark ml-1";
+        button2.className = "btn btn-dark btn-lg bg-transparent ml-1";
+        button2.style.border = 0;
         $(button2).hide();
 
         const div = document.createElement("div");
