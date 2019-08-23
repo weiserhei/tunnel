@@ -2,7 +2,7 @@
 
 // This object contains the state of the app
 export default {
-  maxAnisotropy: 8,
+  maxAnisotropy: 0,
   dpr: 1,
   scene: {
     background: 0x070707
@@ -13,21 +13,29 @@ export default {
     near: 0.008,
   },
   camera: {
-    fov: 35,
+    fov: 40,
     near: 1,
     far: 500,
     aspect: 1,
     // posX: 0,
     // posY: 20,
     // posZ: 30,
-    posX: 0,
-    posY: 1.9,
-    posZ: 0,
+    position: {
+      x: 0,
+      y: 1.7,
+      z: -4
+    }
+  },
+  block: {
+    depth: 8,
+    width: 4,
+    height: 2.5,
+    thickness: 0.2
   },
   controls: {
     autoRotate: false,
     autoRotateSpeed: -0.1,
-    rotateSpeed: 0.60,
+    rotateSpeed: 0.1,
     enableDamping: true,
     dampingFactor: 0.15,
     enableZoom: true,
@@ -41,21 +49,21 @@ export default {
     enablePan: false,
     target: {
       x: 0,
-      y: 1.4,
-      z: 5,
+      y: 2,
+      z: 15,
     },
   },
   sky: {
     size: 500,
     turbidity: 10,
     rayleigh: 2,
-    mieCoefficient: 0.1,
+    mieCoefficient: 0.005,
     mieDirectionalG: 0.8,
-    luminance: 0.8,
+    luminance: 1,
     sunPosition: {
-      x: -50,
-      y: 100,
-      z: -50
+      x: 10,
+      y: -0.3,
+      z: 10
     }
   },
   ambientLight: {
@@ -108,7 +116,7 @@ export default {
     hColor: 0.0,
     sColor: 0,
     lColor: 1,
-    groundHColor: 0.5,
+    groundHColor: 0.4,
     groundSColor: 1,
     groundLColor: 0.5,
     intensity: 0.06,

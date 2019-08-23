@@ -8,7 +8,6 @@ export default class Player {
         let time = 0;
         let current = undefined;
         let blocks = tunneblocks.slice(0);
-        // blocks.forEach(block => block.children[2].material.emissive.setHex(0x111111));
         let run = false;
         let toggle = true;
 
@@ -30,23 +29,14 @@ export default class Player {
         this.reset = function() {
             // licht an
             blocks = tunneblocks.slice(0);
-            // run = true;
-            // tunneblocks.forEach(block => {
-            //     block.children[1].intensity = 8;
-            //     block.children[2].material.emissive.setHex(0x666633)
-            // });
         }
 
         this.on = function(block) {
-            current.children[3].play();
-            current.children[2].material.emissive.setHex(0x666633);
-            current.children[1].intensity = 8;
+            current.on();
         }
 
         this.off = function(block) {
-            current.children[3].play();
-            current.children[2].material.emissive.setHex(0x050505);
-            current.children[1].intensity = 0;
+            current.off();
         }
         
         this.update = function() {
@@ -55,9 +45,6 @@ export default class Player {
                 if(time > 1) {
                     current = blocks.pop();
                     time = 0;
-                    // positionalAudio.position.copy(current.position);
-                    // positionalAudio.stop();
-                    // positionalAudio.play();
                     if(toggle) {
                         this.off(current);
                     } else {
@@ -68,8 +55,8 @@ export default class Player {
                         const self = this;
                         run = false;
                         if( toggle ) {
-                            setTimeout( () => { current.children[4].play(); }, 500);
-                            setTimeout( () => { $(button2).fadeIn(); }, 6000);
+                            // setTimeout( () => { current.mesh.children[4].play(); }, 500);
+                            setTimeout( () => { $(button2).fadeIn(); }, 4000);
                         } else {
                             this.reverse();
                             $(button).fadeIn();
