@@ -10,7 +10,7 @@ export default {
   fog: {
     // color: 0xFFAA00,
     color: 0x070707,
-    near: 0.008,
+    near: 0.018,
   },
   camera: {
     fov: 40,

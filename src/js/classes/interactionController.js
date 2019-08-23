@@ -7,8 +7,11 @@ import {
     faVolumeUp,
     faVolumeMute,
     faExpandArrowsAlt,
+    faCompressArrowsAlt,
     faExpand,
-    faQuestionCircle
+    faQuestionCircle,
+    faCompress,
+
 } from '@fortawesome/free-solid-svg-icons';
 library.add(faExpandArrowsAlt);
 
@@ -28,7 +31,7 @@ function toggleFullScreen() {
   
 export default class InteractionController {
 
-    constructor(container, camera, listener, tunneblocks) {
+    constructor(container, listener, tunneblocks) {
         let time = 0;
         let current = undefined;
         let blocks = tunneblocks.slice(0);
@@ -36,9 +39,13 @@ export default class InteractionController {
         let toggle = true;
 
         const button = document.createElement("button");
-        button.innerHTML = icon(faSkullCrossbones, { classes: ["mr-2", "text-white"] }).html + "come at me";
+        button.innerHTML = icon(
+            faSkullCrossbones, 
+            // { styles: { color: "#fff", filter:"drop-shadow(0px 0px 5px rgba(255,255,255,1))" }}, 
+            { classes: ["mr-2", "text-white"] }
+            ).html+ " Whos there?";
         button.style.textShadow = "0 0 8px white";
-        button.className = "btn btn-danger";
+        button.className = "btn btn-danger btn-lg";
 
         const button2 = document.createElement("button");
         button2.innerHTML = icon(faRedoAlt, { classes: ["mr-2", "text-danger"] }).html + "rewind";
@@ -98,16 +105,21 @@ export default class InteractionController {
         
         }
 
-
-        const fullIcon = icon(faExpandArrowsAlt, { transform: { x:0 }, classes: ["text-dark", "fa-lg"] }).node[0];
+        const fullIcon = icon(faExpand, { transform: { x:0 }, classes: ["text-dark", "fa-lg"] }).html;
+        const shrinkIcon = icon(faCompress, { transform: { x:0 }, classes: ["text-dark", "fa-lg"] }).html;
         const button3 = document.createElement("button");
         button3.className = "btn btn-dark position-absolute mb-3 mr-3 float-right bg-transparent btn-sm";
         button3.style.right = 0;
         button3.style.bottom = 0;
-        button3.appendChild(fullIcon);
+        // button3.appendChild(fullIcon);
+        button3.innerHTML = fullIcon;
         container.appendChild(button3);
         // button3.onclick = openFullscreen.bind(container);
-        button3.onclick = toggleFullScreen.bind(container);
+        button3.onclick = function() { 
+            this.toggle ? button3.innerHTML = fullIcon : button3.innerHTML = shrinkIcon;
+            this.toggle = !this.toggle;
+            toggleFullScreen() 
+        };
 
         const tray = document.createElement("button");
         tray.className = "btn btn-black position-absolute fixed-bottom ml-5 mb-2 btn-sm";
