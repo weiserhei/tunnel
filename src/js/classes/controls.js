@@ -1,5 +1,4 @@
-import TWEEN from '@tweenjs/tween.js';
-import { Vector3 } from 'three';
+import { Vector3, SpotLight } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import Config from './../../data/config';
 // import { createNoisyEasing, createStepEasing } from "./../utils/easings";
@@ -7,12 +6,13 @@ import Config from './../../data/config';
 
 // Controls based on orbit controls
 export default class Controls {
-  constructor(camera, container) {
+  constructor(camera, container, scene) {
+    const cc = Config.controls;
     // const controls = new OrbitControls(camera, container);
     // this.threeControls = controls;
-    // this.camera = camera;
-    // const cc = Config.controls;
+    this.camera = camera;
     // controls.target.set(cc.target.x, cc.target.y, cc.target.z);
+    // controls.update();
     // controls.autoRotate = cc.autoRotate;
     // controls.autoRotateSpeed = cc.autoRotateSpeed;
     // controls.rotateSpeed = cc.rotateSpeed;
@@ -29,7 +29,7 @@ export default class Controls {
     // controls.enablePan = cc.enablePan;
 
     // http://oos.moxiecode.com/js_webgl/grass_quads/
-    const targetCamera = new Vector3(0, 2, 20);
+    const targetCamera = new Vector3().copy(cc.target);
     let mouseX = 0;
     let mouseY = 0;
     let mouseXpercent = 0;
@@ -40,19 +40,22 @@ export default class Controls {
     var leftIsDown = false;
     var rightIsDown = false;
 
-    let camy = 1.7;
-    let distance = -2;
+    let camy = Config.camera.position.y;
+    let distance = Config.camera.position.z;
     let angle = 0;
     let toangle = angle;
         
-    document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+    container.addEventListener( 'mousemove', onDocumentMouseMove, false );
     // document.addEventListener( 'touchstart', onTouchStart, false );
-    document.addEventListener( 'touchmove', onTouchMove, false );
+    container.addEventListener( 'touchmove', onTouchMove, false );
     // document.addEventListener( 'touchend', onTouchEnd, false );
 
     // function onTouchStart(event) { 
     //     event.preventDefault();
     // }
+
+    // scene.add( camera );
+
 
     function onTouchMove(event) { 
         event.preventDefault();
@@ -77,12 +80,12 @@ export default class Controls {
     }
 
     this.update = function( delta ) {
-        // if (upIsDown && camy < 1.5) {camy++};
-        // if (downIsDown && camy > 2.2) {camy--};
+        if (upIsDown && camy < 1.5) {camy++};
+        if (downIsDown && camy > 2.2) {camy--};
 
-        // if (leftIsDown && angle > -0.4) {angle-= 0.01};
-        // if (rightIsDown && angle < 0.4) {angle+= 0.01};
-        // toangle += (angle - toangle)/20;
+        if (leftIsDown && angle > -0.4) {angle-= 0.01};
+        if (rightIsDown && angle < 0.4) {angle+= 0.01};
+        toangle += (angle - toangle)/20;
 
         camera.position.x = Math.sin(toangle) * distance;
         camera.position.z = Math.cos(toangle) * distance;

@@ -11,7 +11,7 @@ export default class Camera {
 
     // Create and position a Perspective Camera
     this.threeCamera = new PerspectiveCamera(fov, aspect, near, far);
-    this.threeCamera.position.set(Config.camera.posX, Config.camera.posY, Config.camera.posZ);
+    this.threeCamera.position.copy(Config.camera.position);
 
     // Initial sizing
     this.updateSize(renderer);
