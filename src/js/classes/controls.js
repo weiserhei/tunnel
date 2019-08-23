@@ -8,8 +8,8 @@ import Config from './../../data/config';
 export default class Controls {
   constructor(camera, container, scene) {
     const cc = Config.controls;
-    // const controls = new OrbitControls(camera, container);
-    // this.threeControls = controls;
+    const controls = new OrbitControls(camera, container);
+    this.threeControls = controls;
     this.camera = camera;
     // controls.target.set(cc.target.x, cc.target.y, cc.target.z);
     // controls.update();
@@ -80,12 +80,12 @@ export default class Controls {
     }
 
     this.update = function( delta ) {
-        if (upIsDown && camy < 1.5) {camy++};
-        if (downIsDown && camy > 2.2) {camy--};
+        // if (upIsDown && camy < 1.5) {camy++};
+        // if (downIsDown && camy > 2.2) {camy--};
 
-        if (leftIsDown && angle > -0.4) {angle-= 0.01};
-        if (rightIsDown && angle < 0.4) {angle+= 0.01};
-        toangle += (angle - toangle)/20;
+        // if (leftIsDown && angle > -0.4) {angle-= 0.01};
+        // if (rightIsDown && angle < 0.4) {angle+= 0.01};
+        // toangle += (angle - toangle)/20;
 
         camera.position.x = Math.sin(toangle) * distance;
         camera.position.z = Math.cos(toangle) * distance;

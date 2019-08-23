@@ -77,6 +77,34 @@ export default function () {
     // gui.add( ic, "play");
     // gui.add( ic, "reset");
     // END GUI
+    // const gui = document.createElement("div");
+    // gui.className = "position-absolute fixed-top card";
+    // container.appendChild(gui);
+
+    const zpos = 8;
+    const ypos = 2.4;
+    const xpos = 0;
+
+    const x = new THREE.SpotLight(0xff4400, 1, 8, Math.PI/2.5, 1, 1 );
+    scene.add( x );
+    let counter = 0;
+    x.userData.update = function(delta) {
+        // x.rotateZ += 0.1;
+        counter += delta * 4;
+        x.target.position.z = zpos + Math.cos(counter);
+        // x.target.position.y = ypos + Math.sin(counter);
+        x.target.position.x = xpos + Math.sin(counter);
+    }
+    x.position.set(xpos, ypos-0.1, zpos);
+    x.target.position.set(xpos,ypos-1,zpos);
+    scene.add( x.target );
+
+    const alarm = new THREE.Mesh(new THREE.BoxBufferGeometry(0.1, 0.2, 0.1), new THREE.MeshPhongMaterial({ color:0x884400, emissive: 0xff8800 }) );
+    alarm.onBeforeRender = () => {
+
+    }
+    scene.add( alarm);
+    alarm.position.set(xpos, ypos, zpos);
 
     var audioLoader = new THREE.AudioLoader();
     audioLoader.load( S_breaker, function( buffer ) {
@@ -101,6 +129,7 @@ export default function () {
         // TWEEN.update();
         ic.update(delta);
         controls.update();
+        x.userData.update(delta);
 	}
 
 	function animate() {
