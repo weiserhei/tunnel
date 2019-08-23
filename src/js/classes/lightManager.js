@@ -18,42 +18,6 @@ import {
       this.scene = scene;
       this.camera = camera;
       this.init();
-
-      this.dim = function() {
-        // this.hemiLight.intensity = 0.4;
-        // this.directionalLight.intensity = 0;
-
-        new TWEEN.Tween(sky.material.uniforms.sunPosition.value)
-        .to({ y: -3 }, 500)
-        .start();
-
-        new TWEEN.Tween(this.directionalLight)
-        .to({ intensity: 0.2 }, 500)
-        .start();
-        new TWEEN.Tween(this.hemiLight)
-        .to({ intensity: 0.5 }, 500)
-        .start();
-        // .easing( TWEEN.Easing.Circular.Out )
-        // .easing( TWEEN.Easing.Circular.InOut )
-        // .easing( TWEEN.Easing.Cubic.InOut )
-        // .easing( TWEEN.Easing.Quintic.InOut )
-
-      }
-      this.reset = function() {
-        // this.hemiLight.intensity = Config.hemiLight.intensity;
-        // this.directionalLight.intensity = Config.directionalLight.intensity;
-        new TWEEN.Tween(sky.material.uniforms.sunPosition.value)
-        .to({ y: 100 }, 500)
-        .start();
-
-        new TWEEN.Tween(this.directionalLight)
-        .to({ intensity: Config.directionalLight.intensity }, 300)
-        .start();
-        new TWEEN.Tween(this.hemiLight)
-        .to({ intensity: Config.hemiLight.intensity }, 300)
-        .start();
-
-      }
     }
   
     init() {
@@ -136,29 +100,6 @@ import {
       // Shadow camera helper
       this.directionalLightHelper = new CameraHelper(this.directionalLight.shadow.camera);
       this.directionalLightHelper.visible = Config.shadow.helperEnabled;
-  
-      // Spotlight
-      this.spotlight = new SpotLight(
-        Config.spotlight.color,
-        Config.spotlight.intensity,
-        Config.spotlight.distance,
-        Config.spotlight.angle,
-        Config.spotlight.decay
-      );
-  
-      this.spotlight.position.set(
-        Config.spotlight.x,
-        Config.spotlight.y,
-        Config.spotlight.z
-      );
-  
-      this.spotlight.target.position.set(
-        Config.spotlight.targetx,
-        Config.spotlight.targety,
-        Config.spotlight.targetz
-      );
-  
-      this.spotLightHelper = new SpotLightHelper(this.spotlight);
   
       // move light wih camera
       // this.camera.add(this.directionalLight);

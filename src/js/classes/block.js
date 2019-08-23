@@ -15,15 +15,8 @@ import {
     MeshBasicMaterial
 } from "three";
 
-import {
-    SpotLight,
-    SphereGeometry,
-    CylinderBufferGeometry,
-    MeshLambertMaterial
-} from "three";
-
 import TurnLight from "./turnLight";
-import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
+import RectLight from "./rectLight";
 
 import T_205_diffuse from "../../textures/pattern_205/diffuse.jpg";
 import T_205_normal from "../../textures/pattern_205/normal.jpg";
@@ -33,8 +26,6 @@ import T_205_specular from "../../textures/pattern_205/specular.jpg";
 // import T_207_normal from "../../textures/pattern_207/normal.jpg";
 // import T_207_specular from "../../textures/pattern_207/specular.jpg";
 import Config from '../../data/config';
-
-RectAreaLightUniformsLib.init();
 
 const textureloader = new TextureLoader();
 const colorMap = textureloader.load(T_205_diffuse);
@@ -76,27 +67,7 @@ export default class Block {
         tunnel.matrixAutoUpdate = false;
         tunnel.updateMatrix();
         // scene.add(tunnel);
-        const lamp = new Mesh(
-            new BoxBufferGeometry(1,0.05,0.15),
-            // new MeshPhongMaterial({color:0xFFFFAA, emissive:0x666633})
-            new MeshPhongMaterial({color:0x886666, emissive:0x666633})
-            );
-        lamp.position.set(0,height-thickness+0.1,-1);
-        lamp.matrixAutoUpdate = false;
-        lamp.updateMatrix();
-        // scene.add(lamp);
-        // lamp.add( positionalAudio );
-        // positionalAudio.position.copy(lamp.position);
 
-        const rectLight = new RectAreaLight( 0xFFFFAA, 16, 1, 0.5 );
-        rectLight.position.set( 0, height-thickness+0.01, 1 );
-        rectLight.rotation.set( -Math.PI / 2,0, 0);
-        // scene.add( rectLight );
-
-        // var rectLightMesh = new Mesh( new PlaneBufferGeometry(), new MeshBasicMaterial( { side: DoubleSide } ) );
-        // rectLightMesh.scale.x = rectLight.width;
-        // rectLightMesh.scale.y = rectLight.height;
-        // rectLight.add( rectLightMesh );
 
         const block = new Object3D();
         block.position.set(0, 0, counter * depth);
@@ -104,23 +75,24 @@ export default class Block {
         block.updateMatrix();
 
         block.add( tunnel );
-        block.add( rectLight );
-        block.userData.lamp = lamp;
-        block.userData.light = rectLight;
-        block.add( lamp );
         // scene.add( block);
         this.mesh = block;
 
-        const turnLight = new TurnLight(block);
-
+        if( counter % 3 === 0) {
+            var turnLight = new TurnLight(block, counter);
+            turnLight.off();
+        }
+        const rectLight = new RectLight(block, height, thickness);
+        // rectLight.off();
 
         this.update = function(delta) {
-            turnLight.update(delta);
+            if( turnLight ) turnLight.update(delta);
+            // turnLight.update(delta);
         }
 
         this.addSound = function(sound) {
             this.sounds.push(sound);
-            lamp.add(sound);
+            // rectLight.add(sound);
         }
 
         this.addBonusSound = function(sound) {
@@ -129,15 +101,15 @@ export default class Block {
         }
 
         this.on = function() {
-            lamp.material.emissive.setHex(0x666633);
-            rectLight.intensity = 16;
+            rectLight.on();
+            if( turnLight ) turnLight.off();
             this.sounds.forEach(sound => sound.play() );
             // this.sounds[0].play();
         }
         
         this.off = function() {
-            lamp.material.emissive.setHex(0x020202);
-            rectLight.intensity = 0;
+            rectLight.off();
+            if( turnLight ) turnLight.on();
             this.sounds.forEach(sound => sound.play() );
             if (this.bonusSound) this.bonusSound.play();
         }
