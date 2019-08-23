@@ -27,7 +27,7 @@ export default {
     }
   },
   block: {
-    depth: 8,
+    depth: 12,
     width: 4,
     height: 2.5,
     thickness: 0.2
