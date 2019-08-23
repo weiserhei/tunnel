@@ -70,7 +70,7 @@ export default class Block {
         const lamp = new Mesh(
             new BoxBufferGeometry(1,0.05,0.15),
             // new MeshPhongMaterial({color:0xFFFFAA, emissive:0x666633})
-            new MeshPhongMaterial({color:0x000000, emissive:0x666633})
+            new MeshPhongMaterial({color:0x886666, emissive:0x666633})
             );
         lamp.position.set(0,height-thickness+0.1,-1);
         lamp.matrixAutoUpdate = false;

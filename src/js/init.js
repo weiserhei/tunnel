@@ -21,8 +21,6 @@ import {
     EffectPass,
     RenderPass
 } from "postprocessing";
-import {BlendFunction} from 'postprocessing'
-import { SpotLight, Vector3 } from 'three';
 
 export default function () {
     
@@ -61,10 +59,6 @@ export default function () {
     var listener = new THREE.AudioListener();
     camera.threeCamera.add( listener );
     // var sound = new THREE.Audio( listener );
-    
-	// GUI
-    // const gui = new dat.GUI();
-    // END GUI
 
     const url = new URL(window.location.href);
     const c = url.searchParams.get("lights") || 4;
@@ -76,17 +70,20 @@ export default function () {
         scene.add(block.mesh);
     }
     
-    const ic = new InteractionController(container, controls.camera, listener, blocks);
-    // const player = new Player(blocks, button, button2);
-    // gui.add( p, "play");
-    // gui.add( p, "reset");
+    const ic = new InteractionController(container, listener, blocks);
+      
+	// GUI
+    // const gui = new dat.GUI();
+    // gui.add( ic, "play");
+    // gui.add( ic, "reset");
+    // END GUI
 
     var audioLoader = new THREE.AudioLoader();
     audioLoader.load( S_breaker, function( buffer ) {
         blocks.forEach(block => {
             const positionalAudio = new THREE.PositionalAudio( listener );
             positionalAudio.setBuffer( buffer );
-            positionalAudio.setRefDistance( 10 );
+            positionalAudio.setRefDistance( 8 );
             block.addSound(positionalAudio);
         })
         // sound.play();
@@ -94,7 +91,8 @@ export default function () {
     audioLoader.load( S_zombi, function( buffer ) {
         const positionalAudio = new THREE.PositionalAudio( listener );
         positionalAudio.setBuffer( buffer );
-        positionalAudio.setRefDistance( 10 );
+        positionalAudio.setRefDistance( 8 );
+        positionalAudio.setVolume( 4 );
         blocks[0].addBonusSound(positionalAudio);
         // sound.play();
     });
