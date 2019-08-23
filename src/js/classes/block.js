@@ -42,6 +42,7 @@ const material = new MeshPhysicalMaterial({
 export default class Block {
     constructor(counter) {
         this.sounds = [];
+        this.bonusSounds = [];
 
         const depth = Config.block.depth;
         const width = Config.block.width;
@@ -78,8 +79,9 @@ export default class Block {
         // scene.add( block);
         this.mesh = block;
 
+        let turnLight;
         if( counter % 3 === 0) {
-            var turnLight = new TurnLight(block, counter);
+            turnLight = new TurnLight(block, counter);
             turnLight.off();
         }
         const rectLight = new RectLight(block, height, thickness);
@@ -87,16 +89,15 @@ export default class Block {
 
         this.update = function(delta) {
             if( turnLight ) turnLight.update(delta);
-            // turnLight.update(delta);
         }
 
         this.addSound = function(sound) {
             this.sounds.push(sound);
-            // rectLight.add(sound);
+            if(rectLight) rectLight.add(sound);
         }
 
         this.addBonusSound = function(sound) {
-            this.bonusSound = sound;
+            this.bonusSounds.push(sound);
             block.add(sound);
         }
 
@@ -104,6 +105,9 @@ export default class Block {
             rectLight.on();
             if( turnLight ) turnLight.off();
             this.sounds.forEach(sound => sound.play() );
+            if (this.bonusSounds) {
+                this.bonusSounds.forEach(sound => sound.stop());
+            }
             // this.sounds[0].play();
         }
         
@@ -111,7 +115,9 @@ export default class Block {
             rectLight.off();
             if( turnLight ) turnLight.on();
             this.sounds.forEach(sound => sound.play() );
-            if (this.bonusSound) this.bonusSound.play();
+            if (this.bonusSounds) {
+                this.bonusSounds.forEach(sound => sound.play());
+            }
         }
 
     }

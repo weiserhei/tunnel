@@ -40,11 +40,16 @@ export default {
   },
   turnLight: {
     color: 0xff4400,
-    intensity: 1,
-    distance: 8,
+    // color: 0xff2200,
+    intensity: 0.8,
+    distance: 7,
     angle: Math.PI/2.5,
     exponent: 1,
-    decay: 2
+    decay: 1.5,
+    material: {
+      emissive: 0xFF6600
+      // emissive: 0xff3300
+    }
   },
   hemiLight: {
     hColor: 0.0,

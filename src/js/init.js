@@ -11,6 +11,7 @@ import Config from './../data/config';
 
 import S_breaker from "../media/131599__modulationstation__kill-switch-large-breaker-switch.ogg";
 import S_zombi from "../media/326261__isaria__zombie-purr-2.wav";
+import S_alarm from "../media/435666__mirkosukovic__alarm-siren.wav";
 
 import { 
     BloomEffect,
@@ -61,7 +62,7 @@ export default function () {
     // var sound = new THREE.Audio( listener );
 
     const url = new URL(window.location.href);
-    const c = url.searchParams.get("lights") || 6;
+    const c = url.searchParams.get("lights") || 4;
 
     const blocks = [];
     for(let i = 0; i< c; i++) {
@@ -96,6 +97,22 @@ export default function () {
         positionalAudio.setBuffer( buffer );
         positionalAudio.setRefDistance( 8 );
         positionalAudio.setVolume( 4 );
+        blocks[0].addBonusSound(positionalAudio);
+        // sound.play();
+    });
+    audioLoader.load( S_alarm, function( buffer ) {
+        var positionalAudio = new THREE.PositionalAudio( listener );
+        positionalAudio.setBuffer( buffer );
+        positionalAudio.setRefDistance( 8 );
+        positionalAudio.setVolume( 0.2 );
+        positionalAudio.setLoop( true );
+        blocks[blocks.length-1].addBonusSound(positionalAudio);
+
+        var positionalAudio = new THREE.PositionalAudio( listener );
+        positionalAudio.setBuffer( buffer );
+        positionalAudio.setRefDistance( 8 );
+        positionalAudio.setVolume( 0.5 );
+        positionalAudio.setLoop( true );
         blocks[0].addBonusSound(positionalAudio);
         // sound.play();
     });

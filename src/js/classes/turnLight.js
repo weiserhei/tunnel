@@ -47,7 +47,8 @@ export default class TurnLight {
         const lightSide = darkSide.clone();
         const matrix = new Matrix4().makeTranslation( 0, 0, -0.01 );
         darkSide.merge(lightSide, matrix, 1);
-        const lightMaterial = new MeshLambertMaterial({ color:0x884400, emissive: 0xff8800 });
+        // const lightMaterial = new MeshLambertMaterial({ color:0x884400, emissive: 0xff8800 });
+        const lightMaterial = new MeshLambertMaterial({ color:0x884400, emissive: Config.turnLight.material.emissive });
         const darkMaterial = new MeshLambertMaterial({ color: 0x442200, emissive: 0x050500 });
         const baseMat = new MeshLambertMaterial({ color: 0x555555, emissive: 0x000000 });
         

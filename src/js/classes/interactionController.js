@@ -129,7 +129,6 @@ export default class InteractionController {
         const mute = icon(faVolumeMute, { classes: ["text-secondary", "fa-lg"] }).html;
         container.appendChild(tray);
         tray.onclick = function() { 
-            console.log("click", this.toggle);
             if(this.toggle) { 
                 this.toggle = false;
                 listener.setMasterVolume(1); 
