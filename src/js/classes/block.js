@@ -14,6 +14,15 @@ import {
     PlaneBufferGeometry,
     MeshBasicMaterial
 } from "three";
+
+import {
+    SpotLight,
+    SphereGeometry,
+    CylinderBufferGeometry,
+    MeshLambertMaterial
+} from "three";
+
+import TurnLight from "./turnLight";
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
 
 import T_205_diffuse from "../../textures/pattern_205/diffuse.jpg";
@@ -101,6 +110,13 @@ export default class Block {
         block.add( lamp );
         // scene.add( block);
         this.mesh = block;
+
+        const turnLight = new TurnLight(block);
+
+
+        this.update = function(delta) {
+            turnLight.update(delta);
+        }
 
         this.addSound = function(sound) {
             this.sounds.push(sound);

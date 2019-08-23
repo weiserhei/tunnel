@@ -86,6 +86,7 @@ export default class InteractionController {
         }
         
         this.update = function( delta ) {
+            tunneblocks.forEach(block => block.update(delta));
             time += delta;
             if (( !running || blocks.length < 1  ) || time < 1) return;
 
