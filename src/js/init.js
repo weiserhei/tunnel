@@ -81,30 +81,53 @@ export default function () {
     // gui.className = "position-absolute fixed-top card";
     // container.appendChild(gui);
 
-    const zpos = 8;
-    const ypos = 2.4;
-    const xpos = 0;
+    // const zpos = 8;
+    // const ypos = 2.4;
+    // const xpos = 0;
 
-    const x = new THREE.SpotLight(0xff4400, 1, 8, Math.PI/2.5, 1, 1 );
-    scene.add( x );
-    let counter = 0;
-    x.userData.update = function(delta) {
-        // x.rotateZ += 0.1;
-        counter += delta * 4;
-        x.target.position.z = zpos + Math.cos(counter);
-        // x.target.position.y = ypos + Math.sin(counter);
-        x.target.position.x = xpos + Math.sin(counter);
-    }
-    x.position.set(xpos, ypos-0.1, zpos);
-    x.target.position.set(xpos,ypos-1,zpos);
-    scene.add( x.target );
+    // const x = new THREE.SpotLight(0xff4400, 1, 8, Math.PI/2.5, 1, 1 );
+    // scene.add( x );
+    // let counter = 0;
+    // x.userData.update = function(delta) {
+    //     // x.rotateZ += 0.1;
+    //     counter += delta * 4;
+    //     x.target.position.z = zpos + Math.cos(counter);
+    //     // x.target.position.y = ypos + Math.sin(counter);
+    //     x.target.position.x = xpos + Math.sin(counter);
+    // }
+    // x.position.set(xpos, ypos-0.1, zpos);
+    // x.target.position.set(xpos,ypos-1,zpos);
+    // scene.add( x.target );
 
-    const alarm = new THREE.Mesh(new THREE.BoxBufferGeometry(0.1, 0.2, 0.1), new THREE.MeshPhongMaterial({ color:0x884400, emissive: 0xff8800 }) );
-    alarm.onBeforeRender = () => {
+    // // const alarm = new THREE.Mesh(new THREE.BoxBufferGeometry(0.1, 1.2, 0.1), new THREE.MeshPhongMaterial({ color:0x884400, emissive: 0xff8800 }) );
+    
+    // // const darkSide = new THREE.BoxGeometry(0.05, 0.2, 0.1);
+    // const darkSide = new THREE.SphereGeometry(0.1, 16, 16);
+    // darkSide.applyMatrix( new THREE.Matrix4().makeTranslation( -0.025, 0, 0 ));
+    // const lightSide = darkSide.clone();
+    // const matrix = new THREE.Matrix4().makeTranslation( 0.025, 0, 0 );
+    // darkSide.merge(lightSide, matrix, 6);
+    // const lightMaterial = new THREE.MeshLambertMaterial({ color:0x884400, emissive: 0xff8800 });
+    // const darkMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, emissive: 0x000000 });
+    // const baseMat = new THREE.MeshLambertMaterial({ color: 0x555555, emissive: 0x000000 });
+    
+    // const turnLight = new THREE.Mesh( darkSide, [
+    //     lightMaterial, lightMaterial, lightMaterial, lightMaterial, lightMaterial, lightMaterial,
+    //     darkMaterial, darkMaterial, darkMaterial, darkMaterial, darkMaterial, darkMaterial,
+    // ] );
+    // // light.geometry.faces.forEach(function(face) {face.materialIndex = 0; console.log("fa", face)});
+    // turnLight.position.set(0, -0.1, 0);
 
-    }
-    scene.add( alarm);
-    alarm.position.set(xpos, ypos, zpos);
+    // const base = new THREE.Mesh(new THREE.CylinderBufferGeometry(0.25, 0.20, 0.15, 16, 4), baseMat);
+    // scene.add(base);
+    // base.add(turnLight);
+    // base.position.set(0, 2.37, zpos);
+
+    // turnLight.onBeforeRender = () => {
+    //     // alarm.lookAt(x.target.position.x, alarm.position.y, x.target.position.z);
+    //     turnLight.lookAt(x.target.position.x, turnLight.position.y, x.target.position.z);
+    // }
+
 
     var audioLoader = new THREE.AudioLoader();
     audioLoader.load( S_breaker, function( buffer ) {
@@ -129,7 +152,7 @@ export default function () {
         // TWEEN.update();
         ic.update(delta);
         controls.update();
-        x.userData.update(delta);
+        // x.userData.update(delta);
 	}
 
 	function animate() {
