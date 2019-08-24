@@ -8,7 +8,7 @@ import Config from './../../data/config';
 export default class Controls {
   constructor(camera, container, scene) {
     const cc = Config.controls;
-    const controls = new OrbitControls(camera, container);
+    // const controls = new OrbitControls(camera, container);
     // this.threeControls = controls;
     this.camera = camera;
     // controls.target.set(cc.target.x, cc.target.y, cc.target.z);
@@ -90,7 +90,7 @@ export default class Controls {
         camera.position.x = Math.sin(toangle) * distance;
         camera.position.z = Math.cos(toangle) * distance;
         
-        // camera.position.y += (camy - camera.position.y) / 10;
+        camera.position.y += (camy - camera.position.y) / 10;
         
         targetCamera.x += (-mouseXpercent * 5 - targetCamera.x) / 10;
         targetCamera.y += (-(mouseYpercent * 5) +1 - targetCamera.y) / 50;
