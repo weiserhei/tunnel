@@ -24,6 +24,7 @@ import Camera from './classes/camera';
 import InteractionController from './classes/interactionController';
 import LightManager from './classes/lightManager';
 import Block from './classes/block';
+import Particles from './classes/particles';
 
 import Config from './../data/config';
 import S_breaker from "../media/131599__modulationstation__kill-switch-large-breaker-switch.ogg";
@@ -84,6 +85,9 @@ export default function () {
     camera.threeCamera.add( listener );
     // var sound = new THREE.Audio( listener );
 
+    // const particles = new Particles(scene, listener);
+    // particles.start();
+
     const url = new URL(window.location.href);
     const c = url.searchParams.get("lights") || Config.block.count;
 
@@ -122,12 +126,14 @@ export default function () {
                 positionalAudio.setVolume( 0.2 );
                 positionalAudio.setLoop( true );
                 block.addBonusSound(positionalAudio);
+                // block.addParticle( particles );
             }
         });
     });
     
 	function update(delta) {
         stats.update();
+        // particles.update(delta);
         ic.update(delta);
         controls.update();
 	}

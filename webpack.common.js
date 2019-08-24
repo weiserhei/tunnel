@@ -34,8 +34,8 @@ module.exports = {
                 // shim because SPE 1.0.6 is not a module
                 // delete SPEs dependency on threejs in package-lock.json 
                 // or it will fallback and doesnt work!
-                // test: require.resolve("shader-particle-engine"),
-                // use: ['imports-loader?THREE=three', 'exports-loader?SPE']
+                test: require.resolve("shader-particle-engine"),
+                use: ['imports-loader?THREE=three', 'exports-loader?SPE']
 
             },
 		// {
