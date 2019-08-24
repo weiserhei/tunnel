@@ -16,10 +16,8 @@ export default class TurnLight {
 
         this.turning = true;
 
-        const zpos = 4;
-        // const zpos = counter * depth - 1;
-        const ypos = 2.4;
-        const xpos = 0;
+        const tlc = Config.turnLight;
+        const ypos = Config.block.height;
     
         const spotLight = new SpotLight(
             Config.turnLight.color,
@@ -32,48 +30,45 @@ export default class TurnLight {
         spotLight.userData.update = function(delta) {
             // x.rotateZ += 0.1;
             temp += delta * 4;
-            spotLight.target.position.z = zpos + Math.cos(temp);
-            // x.target.position.y = ypos + Math.sin(counter);
-            spotLight.target.position.x = xpos + Math.sin(temp);
+            spotLight.target.position.z = tlc.position.z + Math.cos(temp);
+            // spotLight.target.position.y = ypos + Math.sin(temp * 2);
+            // spotLight.target.position.y = ypos + 2;
+            spotLight.target.position.x = tlc.position.x + Math.sin(temp);
         }
-        spotLight.position.set(xpos, ypos-0.1, zpos);
-        spotLight.target.position.set(xpos,ypos-1,zpos);
+        spotLight.position.set(tlc.position.x, ypos, tlc.position.z);
+        spotLight.target.position.set( tlc.position.x,ypos-1.5,tlc.position.z );
         block.add( spotLight );
         block.add( spotLight.target );
 
-        // const darkSide = new THREE.BoxGeometry(0.05, 0.2, 0.1);
-        const darkSide = new SphereGeometry(0.1, 16, 16);
-        // darkSide.applyMatrix( new Matrix4().makeTranslation( 0, 0, 0.025 ));
-        const lightSide = darkSide.clone();
+        const size = 0.08;
+        const darkSide = new SphereGeometry(size, 16, 16);
         const matrix = new Matrix4().makeTranslation( 0, 0, -0.01 );
-        darkSide.merge(lightSide, matrix, 1);
-        // const lightMaterial = new MeshLambertMaterial({ color:0x884400, emissive: 0xff8800 });
-        const lightMaterial = new MeshLambertMaterial({ color:0x884400, emissive: Config.turnLight.material.emissive });
+        darkSide.merge(darkSide, matrix, 1);
+        const lightMaterial = new MeshLambertMaterial({ color:0x444444, emissive: tlc.material.emissive });
         const darkMaterial = new MeshLambertMaterial({ color: 0x442200, emissive: 0x050500 });
-        const baseMat = new MeshLambertMaterial({ color: 0x555555, emissive: 0x000000 });
-        
         const bulb = new Mesh( darkSide, [
             lightMaterial, darkMaterial
-            // lightMaterial, lightMaterial, lightMaterial, lightMaterial, lightMaterial, lightMaterial,
-            // darkMaterial, darkMaterial, darkMaterial, darkMaterial, darkMaterial, darkMaterial,
         ] );
         // light.geometry.faces.forEach(function(face) {face.materialIndex = 0; console.log("fa", face)});
-        bulb.position.set(0, -.1, 0);
-    
-        const base = new Mesh(new CylinderBufferGeometry(0.25, 0.20, 0.15, 16, 4), baseMat);
+        bulb.position.set(0, -size, 0);
+        
+        const baseMat = new MeshLambertMaterial({ color: 0x888888, emissive: 0x000000 });
+        const base = new Mesh(new CylinderBufferGeometry(size*2+0.1, size*2, size+0.05, 8, 2), baseMat);
         block.add(base);
         base.add(bulb);
-        base.position.set(0, 2.37, zpos);
+        base.position.set( tlc.position.x, ypos, tlc.position.z );
+        base.matrixAutoUpdate = false;
+        base.updateMatrix();
         const tempVec = new Vector3();
 
         this.on = function() {
-            lightMaterial.emissive.setHex(0xFF8800);
-            spotLight.intensity = 1;
+            lightMaterial.emissive.setHex(tlc.material.emissive);
+            spotLight.intensity = tlc.intensity;
             this.turning = true;
         }
 
         this.off = function() {
-            lightMaterial.emissive.setHex(0x050500);
+            lightMaterial.emissive.setHex(tlc.material.offEmissive);
             spotLight.intensity = 0;
             this.turning = false;
         }
@@ -81,7 +76,8 @@ export default class TurnLight {
         this.update = function(delta) {
             if (!this.turning) return;
             spotLight.userData.update(delta);
-            bulb.lookAt(spotLight.target.getWorldPosition(tempVec).x, bulb.position.y+2, spotLight.target.getWorldPosition(tempVec).z);
+            bulb.lookAt(spotLight.target.getWorldPosition(tempVec).x, ypos-0.5, spotLight.target.getWorldPosition(tempVec).z);
+            // bulb.lookAt(spotLight.target.getWorldPosition(tempVec));
         }
 
     }

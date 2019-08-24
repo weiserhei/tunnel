@@ -7,8 +7,10 @@ import {
     MeshPhongMaterial,
     Mesh,
     RepeatWrapping,
-    Object3D,
     DoubleSide,
+    BoxBufferGeometry,
+    MeshNormalMaterial,
+    SphereBufferGeometry,
 } from "three";
 
 import TurnLight from "./turnLight";
@@ -28,59 +30,65 @@ const colorMap = textureloader.load(T_205_diffuse);
 const normalMap = textureloader.load(T_205_normal);
 const specularMap = textureloader.load(T_205_specular);
 const material = new MeshPhysicalMaterial({
-    color:0xFFFFFF,
+    color:0xffffff,
     map: colorMap,
     normalMap: normalMap,
     metalnessMap: specularMap,
     roughness: 0.4,
 });
 
+const repeatx = 2;
+const repeaty = 2;
+material.map.wrapS = material.map.wrapT = RepeatWrapping;
+material.normalMap.wrapS = material.normalMap.wrapT = RepeatWrapping;
+material.metalnessMap.wrapS = material.metalnessMap.wrapT = RepeatWrapping;
+material.map.repeat.set( repeatx, repeaty );
+material.normalMap.repeat.set( repeatx, repeaty );
+material.metalnessMap.repeat.set( repeatx, repeaty );
+material.map.anisotropy = Config.maxAnisotropy;
+material.normalMap.anisotropy = Config.maxAnisotropy;
+material.metalnessMap.anisotropy = Config.maxAnisotropy;
+
 export default class Block {
-    constructor(counter) {
+    constructor(counter, scene) {
         this.sounds = [];
         this.bonusSounds = [];
+
+        // const x = new Mesh(new BoxBufferGeometry(1, 2.4, 1), new MeshNormalMaterial());
+        // x.position.set(0.5, 1.2, 0);
+        // scene.add( x );
+        // const y = new Mesh(new SphereBufferGeometry(0.5, 16, 16), new MeshNormalMaterial());
+        // y.position.set(-1, 0.5, 0);
+        // scene.add( y );
 
         const depth = Config.block.depth;
         const width = Config.block.width;
         const height = Config.block.height;
         const thickness = Config.block.thickness;
 
-        const geometryFloor = new BoxGeometry(width,thickness,depth);
         const geometryWall = new BoxGeometry(thickness,height,depth);
-        geometryWall.applyMatrix(new Matrix4().makeTranslation(width/2, height/2, 0));
+        const geometryFloor = new BoxGeometry(width,thickness,depth);
+        geometryFloor.applyMatrix( new Matrix4().makeTranslation(0, -thickness/2, 0));
+        geometryFloor.merge(geometryFloor, new Matrix4().makeTranslation(0, height+thickness, 0));
+        geometryFloor.merge(geometryWall, new Matrix4().makeTranslation(width/2+thickness/2, height/2, 0));
+        geometryFloor.merge(geometryWall, new Matrix4().makeTranslation(-width/2-thickness/2, height/2, 0));
 
-        material.map.wrapS = material.map.wrapT = RepeatWrapping;
-        material.map.repeat.set( 1, 1 );
-        material.map.anisotropy = Config.maxAnisotropy;
-        material.normalMap.anisotropy = Config.maxAnisotropy;
-        // geometry.applyMatrix( new THREE.Matrix4().makeRotationY( Math.PI / 2 ) );
-        geometryFloor.merge(geometryWall, geometryWall.matrix);
-        const geo2 = geometryFloor.clone();
-        geo2.applyMatrix(new Matrix4().makeRotationZ(Math.PI ));
-        geo2.applyMatrix(new Matrix4().makeTranslation(0, height, 0));
-        geometryFloor.merge(geo2, geo2.matrix);
-        // const geometry = geometryFloor.merge(geometryWall, geometryWall.matrix);
-        const tunnel = new Mesh(geometryFloor, material);
+        const tunnel = new Mesh(geometryFloor,material);
         tunnel.matrixAutoUpdate = false;
-        tunnel.updateMatrix();
         // scene.add(tunnel);
-
-        const block = new Object3D();
-        block.position.set(0, 0, counter * depth);
-        block.matrixAutoUpdate = false;
-        block.updateMatrix();
-        block.add( tunnel );
-        // scene.add( block);
-        this.mesh = block;
+        
+        tunnel.position.set(0, 0, counter * depth);
+        tunnel.updateMatrix();
+        this.mesh = tunnel;
 
         let turnLight;
         // add every X blocks an alarm light
         if( counter % 3 === 0) {
-            turnLight = new TurnLight(block, counter);
-            turnLight.off();
+            turnLight = new TurnLight(tunnel, counter);
+            // turnLight.off();
         }
-        const rectLight = new RectLight(block, height, thickness);
-        // rectLight.off();
+        const rectLight = new RectLight(tunnel, height, thickness);
+        rectLight.off();
 
         this.update = function(delta) {
             if( turnLight ) turnLight.update(delta);
@@ -93,7 +101,7 @@ export default class Block {
 
         this.addBonusSound = function(sound) {
             this.bonusSounds.push(sound);
-            block.add(sound);
+            tunnel.add(sound);
         }
 
         this.on = function() {
