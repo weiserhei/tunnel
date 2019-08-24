@@ -16,6 +16,7 @@ import {
     EffectPass,
     RenderPass
 } from "postprocessing";
+import Stats from 'stats.js';
 
 import Controls from './classes/controls';
 import Renderer from './classes/renderer';
@@ -35,10 +36,12 @@ export default function () {
     const container = document.body;
 	const clock = new Clock();
     let delta = 0;
-
 	const scene = new Scene();
 	scene.background = new Color(Config.scene.background);
-	scene.fog = new FogExp2(Config.fog.color, Config.fog.near);
+    scene.fog = new FogExp2(Config.fog.color, Config.fog.near);
+    
+    const stats = new Stats();
+    container.appendChild( stats.dom );
 
     const renderer = new Renderer(container);
 	const camera = new Camera(renderer.threeRenderer);
@@ -46,11 +49,23 @@ export default function () {
 
     const composer = new EffectComposer(renderer.threeRenderer);
     // const effectPass = new EffectPass(camera.threeCamera, new RealisticBokehEffect( {dof:0.1, focus: 0.9} ));
-    const effectPass2 = new EffectPass(camera.threeCamera, new RealisticBokehEffect( {focalLength:70, focus: 10} ));
+    const effectPass2 = new EffectPass(camera.threeCamera, new RealisticBokehEffect( {
+        // showFocus: true,
+        luminanceGain: 2,
+        luminanceThreshold: 0.2,
+        // pentagon: true,
+        // rings: 10,
+        // samples: 4,
+        // maxBlur: 2,
+        fringe: 1,
+        // bias: 1,
+        focalLength:Config.postprocessing.focalLength, 
+        focus: Config.postprocessing.focus
+    } ));
     effectPass2.renderToScreen = true;
-    const effectPass = new EffectPass(camera.threeCamera, new VignetteEffect({darkness:0.4}));
+    const effectPass = new EffectPass(camera.threeCamera, new VignetteEffect({darkness:Config.postprocessing.darkness}));
     // effectPass.renderToScreen = true;
-    const effectPass3 = new EffectPass(camera.threeCamera, new BloomEffect({ luminanceThreshold: 0.1, luminanceSmoothing: 0.2 }));
+    const effectPass3 = new EffectPass(camera.threeCamera, new BloomEffect({ luminanceThreshold: Config.postprocessing.luminanceThreshold, luminanceSmoothing: Config.postprocessing.luminanceSmoothing }));
 
     composer.addPass(new RenderPass(scene, camera.threeCamera));
     composer.addPass(effectPass);
@@ -60,6 +75,7 @@ export default function () {
 	const lightManager = new LightManager(scene);
     const lights = [
         // "directional",
+        // "ambient",
         "hemi"
     ];
 	lights.forEach((light) => lightManager.place(light));
@@ -69,11 +85,11 @@ export default function () {
     // var sound = new THREE.Audio( listener );
 
     const url = new URL(window.location.href);
-    const c = url.searchParams.get("lights") || 4;
+    const c = url.searchParams.get("lights") || Config.block.count;
 
     const blocks = [];
     for(let i = 0; i< c; i++) {
-        const block = new Block(i, listener);
+        const block = new Block(i, scene);
         blocks.push(block);
         scene.add(block.mesh);
     }
@@ -111,6 +127,7 @@ export default function () {
     });
     
 	function update(delta) {
+        stats.update();
         ic.update(delta);
         controls.update();
 	}

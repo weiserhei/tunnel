@@ -2,6 +2,7 @@ import {
     HemisphereLight,
     DirectionalLight,
     CameraHelper,
+    AmbientLight,
     SpotLight,
     SpotLightHelper,
     PointLight,
@@ -22,7 +23,7 @@ import {
   
     init() {
       // Ambient
-      // this.ambientLight = new THREE.AmbientLight(Config.ambientLight.color);
+      this.ambientLight = new AmbientLight(Config.ambientLight.color);
       // this.ambientLight.visible = Config.ambientLight.enabled;
   
       // Point light
