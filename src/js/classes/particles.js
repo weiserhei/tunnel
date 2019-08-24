@@ -1,76 +1,89 @@
-import * as THREE from 'three';
+import { PositionalAudio, AudioLoader, TextureLoader, Color, Vector3, NormalBlending } from 'three';
 import SPE from "shader-particle-engine";
 
 import cloud from "../../images/cloud.png";
-import soundSteam from "../../media/steam.ogg";
+// import cloud from "../../images/smokeparticle.png";
+import soundSteam from "../../media/steam_loop.ogg";
+import Config from '../../data/config';
 
 export default class Particles {
-    constructor(scene, sound) {
+    constructor(scene, listener) {
 
         // Create particle group and emitter
         let particleGroup = new SPE.Group({
             texture: {
-                value: new THREE.TextureLoader().load(cloud)
+                value: new TextureLoader().load(cloud)
             },
-            blending: THREE.NormalBlending,
-            maxParticleCount: 500,
+            blending: NormalBlending,
+            maxParticleCount: 1000,
             fog: false
         });
         
-        let smokeEmitter = new SPE.Emitter({
+        // const zpos = -2.2;
+        const zpos = -1;
+        const xpos = -1.5;
+        const acceleration = new Vector3( 0.05, -0.05, 0);
+        const velocity = new Vector3( -0.5, 0.1, 0);
+
+        let emitter = new SPE.Emitter({
             particleCount: 500,
             maxAge: {
                 value: 3,
             },
             position: {
-                value: new THREE.Vector3( 0, -0.3, 0 ),
-                // value: new THREE.Vector3( -6.5, 0, 10 ),
-                spread: new THREE.Vector3( 10, 0.5, 8 )
+                value: new Vector3( -xpos, Config.block.height - 1.3, zpos ),
+                spread: new Vector3( 0, 0, 0 )
             },
             velocity: {
-                value: new THREE.Vector3( 0, 0.7, 0 )
+                value: velocity
+            },
+            acceleration: {
+                value: acceleration
             },
             wiggle: {
-                spread: 5
+                spread: 1
             },
             size: {
-                value: 10,
-                spread: 15
+                value: [0.01, 0.5],
+                spread: 2
             },
             opacity: {
-                value: [ 0, 0.6, 0 ]
+                value: [ 0, 0.01, 0.04, 0 ]
             },
             color: {
-                value: [new THREE.Color( 0.5,0.5,0.5 ), new THREE.Color(1,1,1)],
-                spread: new THREE.Color( 0.1, 0.1, 0.1 )
+                // value: [new Color( 0.5,0.5,0.5 ), new Color(0.8, 0.8, 0.8)],
+                value: [new Color( 0.4,0.3, 0.2 ), new Color(0.4, 0.3, 0.2)],
+                spread: new Color( 0.1, 0.1, 0.1 )
             },
             angle: {
-                value: [ 0, Math.PI * 0.125 ]
+                value: [ 0, Math.PI ]
             }
         });
         
-        smokeEmitter.disable();
-        particleGroup.addEmitter( smokeEmitter );
+        emitter.disable();
+        particleGroup.addEmitter( emitter );
         scene.add( particleGroup.mesh );
-        // particleGroup.mesh.frustumCulled = false;
-        this.emitter = smokeEmitter;
+        particleGroup.mesh.frustumCulled = false;
+        this.emitter = emitter;
         this.particleGroup = particleGroup;
 
         this.stop = function() {
-            smokeEmitter.disable();
+            emitter.disable();
         }
 
-        // load a sound and set it as the Audio object's buffer
-        var audioLoader = new THREE.AudioLoader();
+        const positionalAudio = new PositionalAudio( listener );
+        const audioLoader = new AudioLoader();
         audioLoader.load( soundSteam, function( buffer ) {
-            sound.setBuffer( buffer );
-            sound.setLoop( false );
-            sound.setVolume( 0.5 );
+            positionalAudio.setBuffer( buffer );
+            positionalAudio.setLoop( true );
+            positionalAudio.setVolume( 10 );
+            particleGroup.mesh.add( positionalAudio );
+            // positionalAudio.play();
         });
         
         this.start = function() {
-            sound.play();
-            smokeEmitter.enable();
+            positionalAudio.play();
+            emitter.enable();
         }
 
         this.update = function ( delta ) {

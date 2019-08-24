@@ -3,8 +3,9 @@ import {
     TextureLoader,
     BoxGeometry,
     Matrix4,
-    MeshPhysicalMaterial,
     MeshPhongMaterial,
+    MeshPhysicalMaterial,
+    MeshStandardMaterial,
     Mesh,
     RepeatWrapping,
     DoubleSide,
@@ -15,6 +16,7 @@ import {
 
 import TurnLight from "./turnLight";
 import RectLight from "./rectLight";
+import Pipe from "./pipe";
 
 import T_205_diffuse from "../../textures/pattern_205/diffuse.jpg";
 import T_205_normal from "../../textures/pattern_205/normal.jpg";
@@ -29,7 +31,7 @@ const textureloader = new TextureLoader();
 const colorMap = textureloader.load(T_205_diffuse);
 const normalMap = textureloader.load(T_205_normal);
 const specularMap = textureloader.load(T_205_specular);
-const material = new MeshPhysicalMaterial({
+const material = new MeshStandardMaterial({
     color:0xffffff,
     map: colorMap,
     normalMap: normalMap,
@@ -81,14 +83,22 @@ export default class Block {
         tunnel.updateMatrix();
         this.mesh = tunnel;
 
+        const pipe = new Pipe();
+        tunnel.add(pipe);
+
         let turnLight;
         // add every X blocks an alarm light
         if( counter % 3 === 0) {
             turnLight = new TurnLight(tunnel, counter);
-            // turnLight.off();
+            turnLight.off();
         }
         const rectLight = new RectLight(tunnel, height, thickness);
-        rectLight.off();
+        // rectLight.off();
+
+        let particles;
+        this.addParticle = function(particle) {
+            particles = particle;
+        }
 
         this.update = function(delta) {
             if( turnLight ) turnLight.update(delta);
@@ -110,6 +120,7 @@ export default class Block {
             this.sounds.forEach(sound => sound.play() );
             if (this.bonusSounds) {
                 this.bonusSounds.forEach(sound => sound.stop());
+                if( particles ) particles.stop();
             }
             // this.sounds[0].play();
         }
@@ -119,6 +130,7 @@ export default class Block {
             if( turnLight ) turnLight.on();
             this.sounds.forEach(sound => sound.play() );
             if (this.bonusSounds) {
+                if(particles) particles.start();
                 this.bonusSounds.forEach(sound => sound.play());
             }
         }
