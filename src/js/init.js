@@ -32,7 +32,9 @@ import S_breaker from "../media/131599__modulationstation__kill-switch-large-bre
 import S_zombi from "../media/326261__isaria__zombie-purr-2.wav";
 import S_alarm from "../media/435666__mirkosukovic__alarm-siren.wav";
 import S_ballast from "../media/53680__lonemonk__switch-and-ballast-2.ogg";
+import S_explosion from "../media/80401__steveygos93__explosion2.ogg";
 
+import TWEEN from "@tweenjs/tween.js";
 
 export default function () {
     
@@ -85,21 +87,37 @@ export default function () {
 
     const listener = new AudioListener();
     camera.threeCamera.add( listener );
+
     const audio = new Audio( listener );
+    const audio2 = new Audio( listener );
 
     // const particles = new Particles(scene, listener);
     // particles.start();
 
     const url = new URL(window.location.href);
     const c = url.searchParams.get("lights") || Config.block.count;
+    const audioLoader = new AudioLoader();
+    audioLoader.load( S_ballast, function( buffer ) {
+        audio.setBuffer( buffer );
+        audio.setLoop( true );
+        audio.setVolume(0.7);
+        audio.play();
+        // audio.stop();
+    });
 
     const blocks = [];
-    for(let i = 0; i< c; i++) {
-        if( i === 2) {
-            const block = new Block(i, true);
+    for(let i = 0; i < c; i++) {
+        if( i === 0 ) {
+            const block = new Block(i, audio);
             blocks.push(block);
-            scene.add(block.mesh);
-        } else {
+            scene.add( block.mesh );
+        } 
+        else if ( i === Config.rectLight.crash.id-1 ) {
+            const block = new Block(i, undefined, audio2);
+            blocks.push(block);
+            scene.add( block.mesh );
+        }
+        else {
             const block = new Block(i);
             blocks.push(block);
             scene.add(block.mesh);
@@ -108,28 +126,14 @@ export default function () {
     
     const ic = new InteractionController(container, listener, blocks);
 
-    const audioLoader = new AudioLoader();
-    audioLoader.load( S_ballast, function( buffer ) {
-    
-        // blocks.forEach(block => {
-        //     const positionalAudio = new PositionalAudio( listener );
-        //     positionalAudio.setBuffer( buffer );
-        //     positionalAudio.setRefDistance( 3 );
-        //     positionalAudio.setLoop( true );
-        //     positionalAudio.setVolume( 0.7 );
-        //     positionalAudio.play();
-        //     block.addSound(positionalAudio);
-        // });
-        // const positionalAudio = new PositionalAudio( listener );
-        // positionalAudio.setBuffer( buffer );
-        // positionalAudio.setRefDistance( 8 );
-        // positionalAudio.setVolume(1);
-        // block.addSound(positionalAudio);
-        audio.setBuffer( buffer );
-        audio.setLoop( true );
-        audio.setVolume(0.7);
-        audio.play();
+    audioLoader.load( S_explosion, function( buffer ) {
+        audio2.setBuffer( buffer );
+        audio2.setVolume(0.5);
+        audio2.play();
+        audio2.stop();
+        // blocks[Config.rectLight.crash.id].test(audio2);
     });
+
     audioLoader.load( S_breaker, function( buffer ) {
         blocks.forEach(block => {
             const positionalAudio = new PositionalAudio( listener );
@@ -161,6 +165,7 @@ export default function () {
     });
     
 	function update(delta) {
+        TWEEN.update();
         stats.update();
         // particles.update(delta);
         ic.update(delta);

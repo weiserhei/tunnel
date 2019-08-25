@@ -47,6 +47,11 @@ export default {
       emissive: 0x666633,
       offEmissive: 0x020202
     },
+    crash: {
+      enabled: true,
+      id: 2,
+      angle: 90,
+    },
     position: {
       x: 0,
       z: -2
