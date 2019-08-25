@@ -49,7 +49,7 @@ export default {
     },
     crash: {
       enabled: true,
-      id: 2,
+      number: 2,
       angle: 90,
     },
     position: {

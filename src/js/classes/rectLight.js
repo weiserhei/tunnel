@@ -16,7 +16,7 @@ import TWEEN from "@tweenjs/tween.js";
 import Config from '../../data/config';
 
 export default class RectLight {
-    constructor(block, special, audio2) {
+    constructor(block, special) {
 
         const rlc = Config.rectLight;
         const speed = 3;
@@ -95,8 +95,6 @@ export default class RectLight {
         }
         
         function tilt() {
-            audio2.play();
-
             // delay animation for explosion sound
             setTimeout(function(){ 
                 new TWEEN.Tween(mesh.rotation).to({
@@ -114,9 +112,11 @@ export default class RectLight {
         }
 
         function resetTilt() {
-            tilt = false;
+            swinging = false;
             tick = 0;
-            if(tiltRight) { deg = deg * (-1); }
+            // if(tiltRight) { 
+            //     deg = deg * (-1); 
+            // }
             mesh.rotation.z = TMath.degToRad( deg );
             mesh.updateMatrix();
         }

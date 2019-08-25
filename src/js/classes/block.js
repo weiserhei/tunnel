@@ -54,9 +54,11 @@ material.normalMap.anisotropy = Config.maxAnisotropy;
 material.metalnessMap.anisotropy = Config.maxAnisotropy;
 
 export default class Block {
-    constructor(counter, audio, audio2) {
+    constructor(counter, audio) {
         this.sounds = [];
         this.bonusSounds = [];
+
+        let offSound = undefined;
 
         const depth = Config.block.depth;
         const width = Config.block.width;
@@ -88,8 +90,8 @@ export default class Block {
             turnLight.off();
         }
 
-        const special = Config.rectLight.crash.enabled && counter === Config.rectLight.crash.id-1;
-        const rectLight = new RectLight(tunnel, special, audio2);
+        const special = Config.rectLight.crash.enabled && counter === Config.rectLight.crash.number-1;
+        const rectLight = new RectLight(tunnel, special);
         // rectLight.off();
 
         let particles;
@@ -100,6 +102,10 @@ export default class Block {
         this.update = function(delta) {
             if( turnLight ) turnLight.update(delta);
             if( rectLight && special ) rectLight.update(delta);
+        }
+
+        this.offSound = function(sound) {
+            offSound = sound;
         }
 
         this.addSound = function(sound) {
@@ -139,8 +145,12 @@ export default class Block {
         this.off = function() {
             if( rectLight ) rectLight.off();
             if( turnLight ) turnLight.on();
-            if ( audio ) audio.stop();
-            this.sounds.forEach(sound => sound.play() );
+            if( audio ) audio.stop();
+            if( offSound ) offSound.play();
+            if( !special ) {
+                // dont play breaker sound when explosion
+                this.sounds.forEach(sound => sound.play() );
+            }
             if (this.bonusSounds) {
                 if(particles) particles.start();
                 this.bonusSounds.forEach(sound => sound.play());
