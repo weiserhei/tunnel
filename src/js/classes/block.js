@@ -27,6 +27,8 @@ import T_205_specular from "../../textures/pattern_205/specular.jpg";
 // import T_207_specular from "../../textures/pattern_207/specular.jpg";
 import Config from '../../data/config';
 
+import TWEEN from "@tweenjs/tween.js";
+
 const textureloader = new TextureLoader();
 const colorMap = textureloader.load(T_205_diffuse);
 const normalMap = textureloader.load(T_205_normal);
@@ -52,16 +54,9 @@ material.normalMap.anisotropy = Config.maxAnisotropy;
 material.metalnessMap.anisotropy = Config.maxAnisotropy;
 
 export default class Block {
-    constructor(counter, special) {
+    constructor(counter, audio, audio2) {
         this.sounds = [];
         this.bonusSounds = [];
-
-        // const x = new Mesh(new BoxBufferGeometry(1, 2.4, 1), new MeshNormalMaterial());
-        // x.position.set(0.5, 1.2, 0);
-        // scene.add( x );
-        // const y = new Mesh(new SphereBufferGeometry(0.5, 16, 16), new MeshNormalMaterial());
-        // y.position.set(-1, 0.5, 0);
-        // scene.add( y );
 
         const depth = Config.block.depth;
         const width = Config.block.width;
@@ -86,14 +81,15 @@ export default class Block {
         const pipe = new Pipe();
         tunnel.add(pipe);
 
-        let turnLight;
+        let turnLight = false;
         // add every X blocks an alarm light
         if( counter % 3 === 0) {
             turnLight = new TurnLight(tunnel, counter);
             turnLight.off();
         }
 
-        const rectLight = new RectLight(tunnel, special);
+        const special = Config.rectLight.crash.enabled && counter === Config.rectLight.crash.id-1;
+        const rectLight = new RectLight(tunnel, special, audio2);
         // rectLight.off();
 
         let particles;
@@ -117,18 +113,33 @@ export default class Block {
         }
 
         this.on = function() {
-            rectLight.on();
+            if( rectLight ) rectLight.on();
             if( turnLight ) turnLight.off();
-            this.sounds.forEach(sound => sound.play() );
+            if( audio ) {
+                audio.play();
+
+                const volume = {x : 0};
+                new TWEEN.Tween(volume).to({
+                    x: 1
+                }, 1000).onUpdate(function() {
+                    audio.setVolume(volume.x);
+                }).onComplete(function() {
+                    // audio.stop();
+                }).start();
+            }
+
             if (this.bonusSounds) {
                 this.bonusSounds.forEach(sound => sound.stop());
                 if( particles ) particles.stop();
             }
+            // if( special ) return; // no sound because its still turned on?
+            this.sounds.forEach(sound => sound.play() );
         }
         
         this.off = function() {
-            rectLight.off();
+            if( rectLight ) rectLight.off();
             if( turnLight ) turnLight.on();
+            if ( audio ) audio.stop();
             this.sounds.forEach(sound => sound.play() );
             if (this.bonusSounds) {
                 if(particles) particles.start();

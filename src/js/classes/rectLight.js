@@ -11,12 +11,19 @@ import {
     Vector3
 } from "three";
 
+import TWEEN from "@tweenjs/tween.js";
+
 import Config from '../../data/config';
 
 export default class RectLight {
-    constructor(block, special) {
+    constructor(block, special, audio2) {
 
         const rlc = Config.rectLight;
+        const speed = 3;
+        const amp = 5;
+        const angle = 90;
+        let swinging = false;
+        let tick = 0;
 
         const material = new MeshPhongMaterial({
             color:rlc.mesh.color,
@@ -64,40 +71,62 @@ export default class RectLight {
             matrix.makeTranslation( rlc.mesh.width / 2, 0, 0 );
             position.set( rlc.position.x - rlc.mesh.width / 2, Config.block.height,rlc.position.z );
             rectLight.position.set( rlc.position.x + rlc.mesh.width / 2, -0.05, 0 );
-            mesh.rotation.z = TMath.degToRad( -deg );
+            deg = deg * (-1);
         } else {
             matrix.makeTranslation( - rlc.mesh.width / 2, 0, 0 );
             position.set( rlc.position.x + rlc.mesh.width / 2, Config.block.height,rlc.position.z );
             rectLight.position.set( rlc.position.x - rlc.mesh.width / 2, -0.05, 0 );
-            mesh.rotation.z = TMath.degToRad( deg );
         }
+        mesh.rotation.z = TMath.degToRad( deg );
         mesh.geometry.applyMatrix( matrix );
         mesh.position.copy( position );
         
         mesh.matrixAutoUpdate = false;
         mesh.updateMatrix();
+        
+        block.add(mesh);
+        // block.add(rectLight);
 
-        let tilt = false;
-        this.crash = function() {
-            tilt = true;
+        function getRotZ( tick ) {
+            const swing = Math.sin( tick * speed );
+            let rotZ = angle+swing * amp;
+            if ( tiltRight ) rotZ = rotZ * (-1);
+            return TMath.degToRad( rotZ );
+        }
+        
+        function tilt() {
+            audio2.play();
+
+            // delay animation for explosion sound
+            setTimeout(function(){ 
+                new TWEEN.Tween(mesh.rotation).to({
+                    z: getRotZ( tick )
+                }, 2000)
+                .easing( TWEEN.Easing.Elastic.Out )
+                .onUpdate(function() {
+                    mesh.updateMatrix();
+                })
+                .onComplete(function() {
+                    swinging = true;
+                })
+                .start();
+            }, 100);
         }
 
-        let temp = 0;
-        this.update = function(delta) {
-            // return;
-            if(!tilt) {
-                return;
-            }
-            temp += delta;
-            const angle = Math.sin( temp );
-            let rotZ = 90+angle;
-            if ( !tiltRight ) rotZ = rotZ * (-1);
-            mesh.rotation.z = TMath.degToRad( rotZ ) * 3;
+        function resetTilt() {
+            tilt = false;
+            tick = 0;
+            if(tiltRight) { deg = deg * (-1); }
+            mesh.rotation.z = TMath.degToRad( deg );
             mesh.updateMatrix();
         }
 
-        block.add(mesh);
-        // block.add(rectLight);
+        this.update = function(delta) {
+            if(!swinging) return;
+            tick += delta;
+            mesh.rotation.z = getRotZ( tick );
+            mesh.updateMatrix();
+        }
 
         this.add = function(sound) {
             mesh.add(sound);
@@ -107,12 +136,14 @@ export default class RectLight {
             // mesh.material.emissive.setHex(rlc.mesh.emissive);
             material.emissive.setHex(rlc.mesh.emissive);
             rectLight.intensity = rlc.intensity;
+
+            if ( special ) resetTilt();
         }
 
         this.off = function() {
             // mesh.material.emissive.setHex(rlc.mesh.offEmissive);
             if( special ) {
-                tilt = true;
+                tilt();
                 return;
             }
             material.emissive.setHex(rlc.mesh.offEmissive);
