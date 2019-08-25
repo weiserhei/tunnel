@@ -52,7 +52,7 @@ material.normalMap.anisotropy = Config.maxAnisotropy;
 material.metalnessMap.anisotropy = Config.maxAnisotropy;
 
 export default class Block {
-    constructor(counter, scene) {
+    constructor(counter, special) {
         this.sounds = [];
         this.bonusSounds = [];
 
@@ -92,7 +92,8 @@ export default class Block {
             turnLight = new TurnLight(tunnel, counter);
             turnLight.off();
         }
-        const rectLight = new RectLight(tunnel, height, thickness);
+
+        const rectLight = new RectLight(tunnel, special);
         // rectLight.off();
 
         let particles;
@@ -102,6 +103,7 @@ export default class Block {
 
         this.update = function(delta) {
             if( turnLight ) turnLight.update(delta);
+            if( rectLight && special ) rectLight.update(delta);
         }
 
         this.addSound = function(sound) {
@@ -122,7 +124,6 @@ export default class Block {
                 this.bonusSounds.forEach(sound => sound.stop());
                 if( particles ) particles.stop();
             }
-            // this.sounds[0].play();
         }
         
         this.off = function() {

@@ -1,4 +1,5 @@
 import {
+    Audio,
     AudioLoader,
     AudioListener,
     PositionalAudio,
@@ -30,6 +31,7 @@ import Config from './../data/config';
 import S_breaker from "../media/131599__modulationstation__kill-switch-large-breaker-switch.ogg";
 import S_zombi from "../media/326261__isaria__zombie-purr-2.wav";
 import S_alarm from "../media/435666__mirkosukovic__alarm-siren.wav";
+import S_ballast from "../media/53680__lonemonk__switch-and-ballast-2.ogg";
 
 
 export default function () {
@@ -81,9 +83,9 @@ export default function () {
     ];
 	lights.forEach((light) => lightManager.place(light));
 
-    var listener = new AudioListener();
+    const listener = new AudioListener();
     camera.threeCamera.add( listener );
-    // var sound = new THREE.Audio( listener );
+    const audio = new Audio( listener );
 
     // const particles = new Particles(scene, listener);
     // particles.start();
@@ -93,21 +95,48 @@ export default function () {
 
     const blocks = [];
     for(let i = 0; i< c; i++) {
-        const block = new Block(i, scene);
-        blocks.push(block);
-        scene.add(block.mesh);
+        if( i === 2) {
+            const block = new Block(i, true);
+            blocks.push(block);
+            scene.add(block.mesh);
+        } else {
+            const block = new Block(i);
+            blocks.push(block);
+            scene.add(block.mesh);
+        }
     }
     
     const ic = new InteractionController(container, listener, blocks);
 
     const audioLoader = new AudioLoader();
+    audioLoader.load( S_ballast, function( buffer ) {
+    
+        // blocks.forEach(block => {
+        //     const positionalAudio = new PositionalAudio( listener );
+        //     positionalAudio.setBuffer( buffer );
+        //     positionalAudio.setRefDistance( 3 );
+        //     positionalAudio.setLoop( true );
+        //     positionalAudio.setVolume( 0.7 );
+        //     positionalAudio.play();
+        //     block.addSound(positionalAudio);
+        // });
+        // const positionalAudio = new PositionalAudio( listener );
+        // positionalAudio.setBuffer( buffer );
+        // positionalAudio.setRefDistance( 8 );
+        // positionalAudio.setVolume(1);
+        // block.addSound(positionalAudio);
+        audio.setBuffer( buffer );
+        audio.setLoop( true );
+        audio.setVolume(0.7);
+        audio.play();
+    });
     audioLoader.load( S_breaker, function( buffer ) {
         blocks.forEach(block => {
             const positionalAudio = new PositionalAudio( listener );
             positionalAudio.setBuffer( buffer );
             positionalAudio.setRefDistance( 8 );
             block.addSound(positionalAudio);
-        })
+        });
     });
     audioLoader.load( S_zombi, function( buffer ) {
         const positionalAudio = new PositionalAudio( listener );
