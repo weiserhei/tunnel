@@ -3,7 +3,8 @@ import SPE from "shader-particle-engine";
 
 import cloud from "../../images/cloud.png";
 // import cloud from "../../images/smokeparticle.png";
-import soundSteam from "../../media/steam_loop.ogg";
+// import soundSteam from "../../media/steam_loop.ogg";
+import soundSteam from "../../media/340255__kingof-thelab__steamloopbody.wav";
 import Config from '../../data/config';
 
 export default class Particles {
@@ -69,6 +70,7 @@ export default class Particles {
 
         this.stop = function() {
             emitter.disable();
+            positionalAudio.stop();
         }
 
         const positionalAudio = new PositionalAudio( listener );

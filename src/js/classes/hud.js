@@ -78,7 +78,7 @@ export default class Hud {
                     Tunnel Demo (2019)
                 </div>
                 <div class="card-body bg-dark">
-                    Three.js r107, RectArea Lights, Postprocessing
+                    Three.js r107, ShaderParticleEngine, RectArea Lights, Postprocessing
                 </div>
             </div>
             <div class="card bg-secondary text-light">
@@ -106,6 +106,14 @@ export default class Hud {
                         <tr>
                             <td>iSaria</td>
                             <td><a href="https://freesound.org/people/iSaria/sounds/326261/" target="_blank">zombi purr 2</a></td>
+                        </tr>
+                        <tr>
+                            <td>steveygos93</td>
+                            <td><a href="https://freesound.org/people/steveygos93/sounds/80401/" target="_blank">Explosion 2</a></td>
+                        </tr>
+                        <tr>
+                            <td>kingof_thelab</td>
+                            <td><a href="https://freesound.org/people/kingof_thelab/sounds/340255/" target="_blank">Steam Loop Body</a></td>
                         </tr>
                         </tbody>
                     </table>

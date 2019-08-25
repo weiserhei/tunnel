@@ -91,29 +91,16 @@ export default function () {
     const audio = new Audio( listener );
     const audio2 = new Audio( listener );
 
-    // const particles = new Particles(scene, listener);
+    const particles = new Particles(scene, listener);
     // particles.start();
 
     const url = new URL(window.location.href);
     const c = url.searchParams.get("lights") || Config.block.count;
-    const audioLoader = new AudioLoader();
-    audioLoader.load( S_ballast, function( buffer ) {
-        audio.setBuffer( buffer );
-        audio.setLoop( true );
-        audio.setVolume(0.7);
-        audio.play();
-        // audio.stop();
-    });
 
     const blocks = [];
     for(let i = 0; i < c; i++) {
         if( i === 0 ) {
             const block = new Block(i, audio);
-            blocks.push(block);
-            scene.add( block.mesh );
-        } 
-        else if ( i === Config.rectLight.crash.id-1 ) {
-            const block = new Block(i, undefined, audio2);
             blocks.push(block);
             scene.add( block.mesh );
         }
@@ -125,13 +112,23 @@ export default function () {
     }
     
     const ic = new InteractionController(container, listener, blocks);
-
+    
+    const audioLoader = new AudioLoader();
+    audioLoader.load( S_ballast, function( buffer ) {
+        audio.setBuffer( buffer );
+        audio.setLoop( true );
+        audio.setVolume(0.5);
+        audio.play();
+        // audio.stop();
+    });
     audioLoader.load( S_explosion, function( buffer ) {
         audio2.setBuffer( buffer );
         audio2.setVolume(0.5);
         audio2.play();
+        // nice audio bug threejs
         audio2.stop();
-        // blocks[Config.rectLight.crash.id].test(audio2);
+        blocks[Config.rectLight.crash.number-1].offSound(audio2);
+        blocks[Config.rectLight.crash.number-1].addParticle( particles );
     });
 
     audioLoader.load( S_breaker, function( buffer ) {
@@ -159,7 +156,6 @@ export default function () {
                 positionalAudio.setVolume( 0.2 );
                 positionalAudio.setLoop( true );
                 block.addBonusSound(positionalAudio);
-                // block.addParticle( particles );
             }
         });
     });
@@ -167,7 +163,7 @@ export default function () {
 	function update(delta) {
         TWEEN.update();
         stats.update();
-        // particles.update(delta);
+        particles.update(delta);
         ic.update(delta);
         controls.update();
 	}
