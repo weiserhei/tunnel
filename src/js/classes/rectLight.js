@@ -78,7 +78,7 @@ export default class RectLight {
             rectLight.position.set( rlc.position.x - rlc.mesh.width / 2, -0.05, 0 );
         }
         mesh.rotation.z = TMath.degToRad( deg );
-        mesh.geometry.applyMatrix( matrix );
+        mesh.geometry.applyMatrix4( matrix );
         mesh.position.copy( position );
         
         mesh.matrixAutoUpdate = false;

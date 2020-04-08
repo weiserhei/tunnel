@@ -67,7 +67,7 @@ export default class Block {
 
         const geometryWall = new BoxGeometry(thickness,height,depth);
         const geometryFloor = new BoxGeometry(width,thickness,depth);
-        geometryFloor.applyMatrix( new Matrix4().makeTranslation(0, -thickness/2, 0));
+        geometryFloor.applyMatrix4( new Matrix4().makeTranslation(0, -thickness/2, 0));
         geometryFloor.merge(geometryFloor, new Matrix4().makeTranslation(0, height+thickness, 0));
         geometryFloor.merge(geometryWall, new Matrix4().makeTranslation(width/2+thickness/2, height/2, 0));
         geometryFloor.merge(geometryWall, new Matrix4().makeTranslation(-width/2-thickness/2, height/2, 0));
