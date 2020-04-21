@@ -1,12 +1,12 @@
-# roemerhaus3d
+# Tunnel (2019)
+a three.js experiment
 
 ## Demo
 
-* https://r3d.it-kult.net (Stable)
-* https://r3d2.it-kult.net (Dev)
+http://weiserhei.github.io/tunnel/dist/
 
 ### Quickstart
 
-- `git clone https://gitlab.it-kult.net/roemerhaus3d/viewer.git`
+- `git clone https://github.com/weiserhei/tunnel.git`
 - `npm ci`
 - `npm run dev`
