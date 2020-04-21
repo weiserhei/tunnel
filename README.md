@@ -1,7 +1,9 @@
 # Tunnel (2019)
-a three.js experiment
+A three.js experiment with Rectangle-Area-Lights.
 
 ## Demo
+
+![demo](/ogimage.jpg)
 
 http://weiserhei.github.io/tunnel/dist/
 
