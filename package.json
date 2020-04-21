@@ -1,5 +1,5 @@
 {
-  "name": "roemerhaus3d",
+  "name": "tunnel",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/weiserhei/threejs-experiments.git"
+    "url": "git+https://github.com/weiserhei/tunnel.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/weiserhei/threejs-experiments/issues"
+    "url": "https://github.com/weiserhei/tunnel/issues"
   },
-  "homepage": "https://github.com/weiserhei/threejs-experiments#readme",
+  "homepage": "https://github.com/weiserhei/tunnel#readme",
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
