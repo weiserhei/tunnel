@@ -7,7 +7,10 @@ import {
     Clock,
     Color,
     FogExp2,
-    Vector2
+    Vector2,
+    Vector3,
+    Mesh,
+    BoxGeometry
 } from 'three';
 import { 
     BloomEffect,
@@ -56,34 +59,53 @@ export default function () {
 	const controls = new Controls(camera.threeCamera, renderer.threeRenderer.domElement, scene);
 
     const composer = new EffectComposer(renderer.threeRenderer);
-    // const effectPass = new EffectPass(camera.threeCamera, new RealisticBokehEffect( {dof:0.1, focus: 0.9} ));
-    const effectPass2 = new EffectPass(camera.threeCamera, new RealisticBokehEffect( {
+    
+    const bokeh = new RealisticBokehEffect( {
         // showFocus: true,
         luminanceGain: 2,
         luminanceThreshold: 0.2,
         // pentagon: true,
         // rings: 10,
         // samples: 4,
-        maxBlur: 1,
-        // fringe: 2,
+        // maxBlur: 1,
+        fringe: 0,
         // bias: 1,
         focalLength:Config.postprocessing.focalLength, 
         focus: Config.postprocessing.focus
-    } ));
-    // const effectPass2 = new EffectPass(camera.threeCamera, new DepthOfFieldEffect( {
-    //     focalLength: 40
-    // } ));
-    const effectPass = new EffectPass(camera.threeCamera, new VignetteEffect({darkness:Config.postprocessing.darkness}));
-    // const effectPass4 = new EffectPass(camera.threeCamera, new ChromaticAberrationEffect({
-    //     offset: new Vector2(0.001, 0.001)
-    // }));
-    const effectPass3 = new EffectPass(camera.threeCamera, new BloomEffect({ luminanceThreshold: Config.postprocessing.luminanceThreshold, luminanceSmoothing: Config.postprocessing.luminanceSmoothing }));
+    } );
+    const dof = new DepthOfFieldEffect( camera.threeCamera, {
+            focalLength: 0.02,
+            bokehScale: 1
+            // focusDistance: 0.1
+        } );
+
+
+    // const x = new Mesh(new BoxGeometry(1, 1, 1));
+    // x.position.set(0, 0, 15);
+    // scene.add(x);
+    const somePosition = new Vector3(0, 1, 3);
+    // Auto focus on a specific target position. Set to null to disable.
+    dof.target = somePosition;
+
+    // Alternatively, calculate the focus distance and update the uniform once:
+    // const focusDistance = dof.calculateFocusDistance(somePosition);
+    // const cocMaterial = dof.circleOfConfusionMaterial;
+    // cocMaterial.uniforms.focusDistance.value = focusDistance;
+
+    const ca = new ChromaticAberrationEffect({ offset: new Vector2(Config.postprocessing.CAoffset, Config.postprocessing.CAoffset) });
+        
+    const vignette = new VignetteEffect({darkness:Config.postprocessing.darkness});
+    const bloom = new BloomEffect({ luminanceThreshold: Config.postprocessing.luminanceThreshold, luminanceSmoothing: Config.postprocessing.luminanceSmoothing });
+        
+    // const effectPass = new EffectPass(camera.threeCamera, new RealisticBokehEffect( {dof:0.1, focus: 0.9} ));
+    // const effectPass = new EffectPass(camera.threeCamera, vignette, bloom, bokeh);
+    const effectPassV = new EffectPass(camera.threeCamera, vignette, bloom, ca);
+    const effectPassBK = new EffectPass(camera.threeCamera, bokeh);
+    // const effectPassBK = new EffectPass(camera.threeCamera, dof);
 
     composer.addPass(new RenderPass(scene, camera.threeCamera));
-    composer.addPass(effectPass);
-    // composer.addPass(effectPass4);
-    composer.addPass(effectPass3);
-    composer.addPass(effectPass2);
+    composer.addPass(effectPassV);
+    composer.addPass(effectPassBK);
   
 	const lightManager = new LightManager(scene);
     const lights = [
