@@ -1,3 +1,5 @@
+![Node.js CI](https://github.com/weiserhei/tunnel/workflows/Node.js%20CI/badge.svg)
+
 # Tunnel (2019)
 A three.js experiment with Rectangle-Area-Lights.
 
