@@ -29,7 +29,8 @@ export default {
     focus: 8,
     darkness: 0.4,
     luminanceThreshold: 0.1,
-    luminanceSmoothing: 0.2
+    luminanceSmoothing: 0.2,
+    CAoffset: 0.001
   },
   block: {
     count: 4,
