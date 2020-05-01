@@ -44,7 +44,7 @@
   "dependencies": {
     "@tweenjs/tween.js": "^17.4.0",
     "bootstrap": "^4.4.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "popper.js": "^1.16.1",
     "postprocessing": "^6.13.2",
     "shader-particle-engine": "^1.0.6",
