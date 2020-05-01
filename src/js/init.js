@@ -7,12 +7,15 @@ import {
     Clock,
     Color,
     FogExp2,
+    Vector2
 } from 'three';
 import { 
     BloomEffect,
     VignetteEffect,
     BokehEffect,
     RealisticBokehEffect,
+    DepthOfFieldEffect,
+    ChromaticAberrationEffect,
     EffectComposer,
     EffectPass,
     RenderPass
@@ -37,7 +40,7 @@ import S_explosion from "../media/80401__steveygos93__explosion2.ogg";
 import TWEEN from "@tweenjs/tween.js";
 
 export default function () {
-    
+
     const container = document.body;
 	const clock = new Clock();
     let delta = 0;
@@ -61,19 +64,24 @@ export default function () {
         // pentagon: true,
         // rings: 10,
         // samples: 4,
-        // maxBlur: 2,
-        fringe: 1,
+        maxBlur: 1,
+        // fringe: 2,
         // bias: 1,
         focalLength:Config.postprocessing.focalLength, 
         focus: Config.postprocessing.focus
     } ));
-    effectPass2.renderToScreen = true;
+    // const effectPass2 = new EffectPass(camera.threeCamera, new DepthOfFieldEffect( {
+    //     focalLength: 40
+    // } ));
     const effectPass = new EffectPass(camera.threeCamera, new VignetteEffect({darkness:Config.postprocessing.darkness}));
-    // effectPass.renderToScreen = true;
+    // const effectPass4 = new EffectPass(camera.threeCamera, new ChromaticAberrationEffect({
+    //     offset: new Vector2(0.001, 0.001)
+    // }));
     const effectPass3 = new EffectPass(camera.threeCamera, new BloomEffect({ luminanceThreshold: Config.postprocessing.luminanceThreshold, luminanceSmoothing: Config.postprocessing.luminanceSmoothing }));
 
     composer.addPass(new RenderPass(scene, camera.threeCamera));
     composer.addPass(effectPass);
+    // composer.addPass(effectPass4);
     composer.addPass(effectPass3);
     composer.addPass(effectPass2);
   
