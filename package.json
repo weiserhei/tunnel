@@ -48,6 +48,6 @@
     "popper.js": "^1.16.1",
     "postprocessing": "^6.13.2",
     "shader-particle-engine": "^1.0.6",
-    "three": "^0.115.0"
+    "three": ">=0.116.0"
   }
 }
