@@ -25,8 +25,8 @@ export default {
     }
   },
   postprocessing: {
-    focalLength: 40,
-    focus: 8,
+    focalLength: 0.8,
+    focus: 4,
     darkness: 0.4,
     luminanceThreshold: 0.1,
     luminanceSmoothing: 0.2,
