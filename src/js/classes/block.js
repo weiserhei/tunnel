@@ -103,7 +103,7 @@ export default class Block {
         var points = [
             new Vector3(0, 0, -10), 
             new Vector3(0, 0, -0.4), 
-            new Vector3(0.01, 1.1, 0.0), 
+            new Vector3(0.01, 1.1, 0.1), 
             // new Vector3(0, 0, 0), 
             // new Vector3(0, 0, 24),
             // new Vector3(0, 0, 25),
@@ -111,11 +111,11 @@ export default class Block {
     
         var spline = new CatmullRomCurve3( points, false, "catmullrom", 0.2 );
 
-        var tubeGeometry = new TubeBufferGeometry( spline, 300, 0.02, 12, false );
+        var tubeGeometry = new TubeBufferGeometry( spline, 300, 0.01, 12, false );
         var cable_material = new MeshPhongMaterial( { color : 0x999999, emissive: 0x999955 } );
         // var cable_material = new MeshPhongMaterial( { color : 0x999999, emissive: normal_color } );
         var line = new Mesh( tubeGeometry, cable_material );
-        line.position.set(-width/2-0.01, 0.2, 1);
+        line.position.set(-width/2-0.0, 0.2, 1);
         line.userData.emergency = function() {
             // line.material.emissive.set(0xAA5555);
             // line.material.emissive.set(0x999955);
