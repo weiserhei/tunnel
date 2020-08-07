@@ -1,5 +1,6 @@
 import $ from "jquery";
 import Hud from "./hud";
+import { Raycaster, Vector2 } from "three";
 
 function toggleFullScreen() {
     // https://developers.google.com/web/fundamentals/native-hardware/fullscreen/
@@ -16,21 +17,26 @@ function toggleFullScreen() {
   }
   
 export default class InteractionController {
-    constructor(container, listener, tunneblocks) {
+    constructor(container, listener, tunnelblocks, camera) {
         let time = 0;
         let current = undefined;
-        let blocks = tunneblocks.slice(0);
+        let blocks = tunnelblocks.slice(0);
         let running = false;
         let toggle = true;
+        const raycaster = new Raycaster();
+        raycaster.layers.set( 1 );
+        const vector = new Vector2();
 
         const hud = new Hud(container);
 
         hud.playButton.onclick = () => {
+            tunnelblocks[0].button.userData.move(false);
             play();
         }
 
         hud.resetButton.onclick = () => {
             reverse();
+            tunnelblocks[0].button.userData.move(true);
             play();
             // $(button).fadeOut();
             // $(button2).fadeOut();
@@ -39,7 +45,7 @@ export default class InteractionController {
 
         function reverse() {
             toggle = !toggle;
-            blocks = tunneblocks.slice(0);
+            blocks = tunnelblocks.slice(0);
             // this.play();
         }
 
@@ -52,7 +58,7 @@ export default class InteractionController {
         }
         
         this.update = function( delta ) {
-            tunneblocks.forEach(block => block.update(delta));
+            tunnelblocks.forEach(block => block.update(delta));
             time += delta;
             if (( !running || blocks.length < 1  ) || time < 1) return;
 
@@ -62,7 +68,7 @@ export default class InteractionController {
             if(blocks.length === 0) {
                 running = false;
                 if( toggle ) {
-                    setTimeout( () => { $(hud.resetButton).fadeIn(); }, 3000);
+                    setTimeout( () => { if(!running){ $(hud.resetButton).fadeIn();} }, 3000);
                 } else {
                     reverse();
                     $(hud.playButton).fadeIn();
@@ -91,6 +97,48 @@ export default class InteractionController {
         // <button type="button" class="close float-right" aria-label="Close">
         // <span aria-hidden="true">&times;</span>
         // </button>
+
+
+        container.addEventListener('mousedown', onDocumentMouseDown, false);
+        container.addEventListener( 'mousemove', onMouseMove, false );
+
+        const meshes = blocks.map(b => b.mesh);
+        let intersects = [];
+        function onMouseMove( event ) {
+            // calculate mouse position in normalized device coordinates
+            // (-1 to +1) for both components
+            vector.set(
+                ( event.clientX / window.innerWidth ) * 2 - 1,
+                - ( event.clientY / window.innerHeight ) * 2 + 1 );
+            raycaster.setFromCamera( vector, camera );
+            intersects = raycaster.intersectObjects( meshes, true );
+            if ( intersects.length > 0 ) {
+                document.body.style.cursor = "pointer";
+            } else {
+                document.body.style.cursor = "default";
+            }
+        }
+        
+        function onDocumentMouseDown( event ) {
+            if ( intersects.length > 0 ) {
+                // push button
+                // play();
+                
+                // if( !toggle ) {
+                    // reverse();
+                    // }
+                    if(blocks.length === 0 || !toggle) {
+                        intersects[0].object.userData.move(true);
+                        reverse();
+                        play();
+                    } else {
+                        intersects[0].object.userData.move(false);
+                        play();
+                    }
+
+            }
+        }
+
 
     }
 

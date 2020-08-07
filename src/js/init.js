@@ -43,6 +43,8 @@ import S_zombi from "../media/326261__isaria__zombie-purr-2.wav";
 import S_alarm from "../media/435666__mirkosukovic__alarm-siren.wav";
 import S_ballast from "../media/53680__lonemonk__switch-and-ballast-2.ogg";
 import S_explosion from "../media/80401__steveygos93__explosion2.ogg";
+// import S_rocker from "../media/219564__qubodup__rocker-spring-light-switch.ogg";
+import S_rocker from "../media/403537__lamamakesmusic__door-heavy-reverb-open-close.ogg";
 
 import TWEEN from "@tweenjs/tween.js";
 
@@ -124,6 +126,7 @@ export default function () {
 
     const audio = new Audio( listener );
     const audio2 = new Audio( listener );
+    const audio3 = new Audio( listener );
 
     const particles = new Particles(scene, listener);
     // particles.start();
@@ -144,8 +147,8 @@ export default function () {
             scene.add(block.mesh);
         }
     }
-    
-    const ic = new InteractionController(container, listener, blocks);
+
+    const ic = new InteractionController(container, listener, blocks, camera.threeCamera);
     
     const audioLoader = new AudioLoader();
     audioLoader.load( S_ballast, function( buffer ) {
@@ -155,12 +158,15 @@ export default function () {
         audio.play();
         // audio.stop();
     });
+    audioLoader.load( S_rocker, function( buffer ) {
+        audio3.setBuffer( buffer );
+        audio3.setLoop( false );
+        audio3.setVolume(0.5);
+        blocks[0].sound_switch.push(audio3);
+    });
     audioLoader.load( S_explosion, function( buffer ) {
         audio2.setBuffer( buffer );
         audio2.setVolume(0.5);
-        audio2.play();
-        // nice audio bug threejs
-        audio2.stop();
         const index = blocks.length < 2 ? 0 : Config.rectLight.crash.number-1;
         blocks[index].offSound(audio2);
         blocks[index].addParticle( particles );

@@ -8,11 +8,13 @@ import {
     Vector3,
     CatmullRomCurve3,
     PlaneBufferGeometry,
+    MeshNormalMaterial,
 } from "three";
 import Config from '../../data/config';
+import TWEEN from '@tweenjs/tween.js';
 
 export default class JunctionBox {
-    constructor(material) {
+    constructor(material, sound) {
 
         // const pc = Config.pipe;
 
@@ -31,17 +33,95 @@ export default class JunctionBox {
         mesh.material.map = undefined;
         
         // x.position.set(-width/2, 1.4, 6);
-        mesh.position.set(-width/2, height/2 + 0.2, 1);
+        
+        // window.addEventListener('resize', replace, false);
+        function replace() {
+            if(window.innerHeight > window.innerWidth){
+                mesh.position.set(-width/2, height/2 + 0.2, 1);
+            } else {
+                mesh.position.set(-width/2, height/2 + 0.2, -1);
+            }
+        }
+        replace();
+
+        const button_normal_color = normal_color.clone();
+        const button_emergency_color = emergency_color.clone();
+        const buttonMaterial = new MeshPhongMaterial({});
+        const button = new Mesh(new BoxBufferGeometry(0.2, 0.1, 0.3), buttonMaterial);
+        mesh.userData.button = button;
+        // button.material.emissive = normal_color;
+        // const button = new Mesh(new BoxBufferGeometry(0.2, 0.1, 0.3), new MeshPhongMaterial({ }));
+        button.layers.enable( 1 );
+        mesh.add( button );
+        button.material.emissive = button_normal_color;
+
+        let tween = new TWEEN.Tween(button_normal_color)
+            // .to(new Color(0x55FF555), 2000)
+            .to(new Color(0x33AA33), 2000)
+            .yoyo( true )
+            .repeat( Infinity )
+            .easing(TWEEN.Easing.Quartic.In)
+
+        let emergency_tween = new TWEEN.Tween(button_emergency_color)
+            .to(new Color(0xFF3333), 2000)
+            .yoyo( true )
+            .repeat( Infinity )
+            .easing(TWEEN.Easing.Quartic.In)
+
+        // tween.chain(tweenBack);
+        // emergency_tween.start();
+        tween.start();
+
+        button.userData.normal = function() {
+            emergency_tween.stop();
+            // button.material.emissive = normal_color;
+            button.material.emissive = button_normal_color;
+            tween.start();
+        }
+
+        button.userData.emergency = function() {
+            tween.stop();
+            button.material.emissive = button_emergency_color;
+            emergency_tween.start();
+        }
+
+        button.userData.isAnimating = false;
+        button.userData.move = function(reverse) {
+            if(this.isAnimating) {
+                return;
+            }
+            this.isAnimating = true;
+            sound[0].play();
+            new TWEEN.Tween(button.position).to({
+                x: -0.03
+            }, 200)
+            .easing( TWEEN.Easing.Elastic.Out )
+            .yoyo(true)
+            .repeat(1)
+            .onStart(() => {
+                    if(reverse) {
+                        button.userData.normal();
+                    } else {
+                        button.userData.emergency();
+                    }
+            })
+            .onComplete(() => {
+                this.isAnimating = false
+            })
+            .start();
+        }
 
         mesh.userData.emergency = function() {
             circle.material.emissive.set(emergency_color);
             m.material.emissive.set(emergency_color);
             line.userData.emergency();
+            button.userData.emergency();
         }
         mesh.userData.normal = function() {
             circle.material.emissive.set(normal_color);
             m.material.emissive.set(normal_color);
             line.userData.normal();
+            button.userData.normal();
         }
 
         mesh.matrixAutoUpdate = false;

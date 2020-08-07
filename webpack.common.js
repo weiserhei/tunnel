@@ -15,7 +15,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Tunnel',
             meta: {"viewport": 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'},
-            // favicon: "src/images/favicon.ico"
+            favicon: ""
             // template: 'src/test.html'
         })
     ],
