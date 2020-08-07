@@ -4,8 +4,7 @@
 A three.js experiment with Rectangle-Area-Lights.
 
 ## Demo
-
-![demo](/ogimage.jpg)
+[![demo](/ogimage.jpg)](http://weiserhei.github.io/tunnel/dist/)
 
 http://weiserhei.github.io/tunnel/dist/
 
