@@ -43,7 +43,7 @@ material.color.setHex(0xaaaaaa);
 // material.emissive.setHex(0xFFAA00);
 
 export default class Pipe {
-    constructor(block) {
+    constructor() {
 
         // const pc = Config.pipe;
 
