@@ -48,7 +48,7 @@ export default class Hud {
         this.fullIcon = icon(faExpand, { transform: { x:0 }, classes: ["text-dark", "fa-lg"] }).html;
         this.shrinkIcon = icon(faCompress, { transform: { x:0 }, classes: ["text-dark", "fa-lg"] }).html;
         this.button3 = document.createElement("button");
-        this.button3.className = "btn btn-dark position-absolute mb-3 mr-3 float-right bg-transparent btn-sm";
+        this.button3.className = "btn btn-dark position-absolute mb-3 mr-3 float-right bg-transparent btn-sm border-0";
         this.button3.style.right = 0;
         this.button3.style.bottom = 0;
         // button3.appendChild(fullIcon);
@@ -126,7 +126,7 @@ export default class Hud {
         info.className = "btn btn-black position-absolute fixed-bottom ml-2 mb-2 btn-sm";
         const i = icon(
             faQuestionCircle,
-            { styles: { color: "#fff", filter:"drop-shadow(0px 0px 5px rgba(255,255,255,1))" },
+            { styles: { color: "#fff", filter:"drop-shadow(0px 0px 0px rgba(255,255,255,1))" },
             classes: ["text-dark", "fa-lg"] }
             ).html;
             info.innerHTML = i;
@@ -162,7 +162,7 @@ export default class Hud {
         const l = layer((push) => {
             push(icon(faCircle, 
                 { 
-                    styles: { color: "#fff", filter:"drop-shadow(0px 0px 5px rgba(255,255,255,0.8))" },
+                    styles: { color: "#fff", filter:"drop-shadow(0px 0px 0px rgba(255,255,255,0.8))" },
                     classes: ["text-dark", "fa-lg"], transform: { size: 18 }  
                 } ))
             push(icon(

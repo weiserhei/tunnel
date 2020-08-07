@@ -9,8 +9,18 @@ import {
     FogExp2,
     Vector2,
     Vector3,
+    CatmullRomCurve3,
+    BufferGeometry,
+    LineBasicMaterial,
+    Line,
     Mesh,
-    BoxGeometry
+    BoxGeometry,
+    PlaneBufferGeometry,
+    MeshNormalMaterial,
+    PlaneGeometry,
+    MeshPhongMaterial,
+    MeshPhysicalMaterial,
+    TubeBufferGeometry,
 } from 'three';
 import { 
     BloomEffect,
@@ -24,6 +34,12 @@ import {
     RenderPass
 } from "postprocessing";
 import Stats from 'stats.js';
+
+import { ImprovedNoise } from "three/examples/jsm/math/ImprovedNoise";
+import { Line2  } from 'three/examples/jsm/lines/Line2.js';
+import { LineMaterial   } from 'three/examples/jsm/lines/LineMaterial.js';
+import { LineGeometry    } from 'three/examples/jsm/lines/LineGeometry.js';
+import { GeometryUtils } from 'three/examples/jsm/utils/GeometryUtils.js';
 
 import Controls from './classes/controls';
 import Renderer from './classes/renderer';
@@ -124,6 +140,86 @@ export default function () {
     const particles = new Particles(scene, listener);
     // particles.start();
 
+    const perlin = new ImprovedNoise();
+
+
+    // Position and THREE.Color Data
+
+    var positions = [];
+    var colors = [];
+
+    const width = Config.block.width;
+
+    // var points = GeometryUtils.hilbert3D( new Vector3( 0, 0, 0 ), 1.0, 1, 0, 1, 2, 3, 4, 5, 6, 7 );
+
+    // var divisions = Math.round( 12 * points.length );
+    // var point = new Vector3();
+    // var color = new Color();
+
+    // for ( var i = 0, l = divisions; i < l; i ++ ) {
+    //     var t = i / l;
+    //     spline.getPoint( t, point );
+    //     positions.push( point.x, point.y, point.z );
+    //     color.setHSL( t, 1.0, 0.5 );
+    //     colors.push( color.r, color.g, color.b );
+    // }
+
+    // var geometry = new BufferGeometry().setFromPoints( points );
+    // var material = new LineBasicMaterial( { color : 0x000000, emissive: 0xFFFFFF } );
+    // var splineObject = new Line( geometry, material );
+
+
+    // Line2 ( LineGeometry, LineMaterial )
+    // var geometry = new LineGeometry();
+    // geometry.setPositions( positions );
+    // geometry.setColors( colors );
+
+    // let matLine = new LineMaterial( {
+    //     color: 0xffffff,
+    //     linewidth: 2, // in pixels
+    //     vertexColors: false,
+    //     //resolution:  // to be set by renderer, eventually
+    //     dashed: false
+    // } );
+
+    // let line = new Line2( geometry, matLine );
+    // line.computeLineDistances();
+    // line.scale.set( 1, 1, 1 );
+
+    // var worldWidth = 256, worldDepth = 256,
+    //             worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
+    
+    // var data = generateHeight( worldWidth, worldDepth );
+    // var geometry = new PlaneBufferGeometry( 10, 30, worldWidth - 1, worldDepth - 1 );
+    // // geometry.rotateZ( -Math.PI / 2 );
+    // geometry.rotateX( -Math.PI / 2 );
+
+    // var vertices = geometry.attributes.position.array;
+
+    // for ( var i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
+    //     vertices[ j + 1 ] = data[ i ] * 0.01;
+    // }
+
+    // let mesh = new Mesh( geometry, new MeshPhongMaterial( { emissive: 0xffffff, color:0x000000} ) );
+    // mesh.position.set(0, -0.3, 0);
+    // scene.add( mesh );
+
+    // function generateHeight( width, height ) {
+    //     var size = width * height, data = new Uint8Array( size ),
+    //         perlin = new ImprovedNoise(), quality = 1, 
+    //         // z = Math.random();
+    //         z = Math.random() * 10;
+    //     for ( var j = 0; j < 4; j ++ ) {
+    //         for ( var i = 0; i < size; i ++ ) {
+    //             var x = i % width, y = ~ ~ ( i / width );
+    //             data[ i ] += Math.abs( perlin.noise( x / quality, y / quality, z ) * quality * 1.75 );
+    //         }
+    //         quality *= 5;
+    //     }
+    //     return data;
+    // }
+
+
     const url = new URL(window.location.href);
     const c = url.searchParams.get("lights") || Config.block.count;
 
@@ -196,6 +292,10 @@ export default function () {
         particles.update(delta);
         ic.update(delta);
         controls.update();
+
+        // let insetWidth = window.innerHeight / 4; // square
+        // let insetHeight = window.innerHeight / 4;
+        // matLine.resolution.set( insetWidth, insetHeight ); // resolution of the inset viewport
 	}
 
 	function animate() {
