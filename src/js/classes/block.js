@@ -60,6 +60,7 @@ export default class Block {
     constructor(counter, audio) {
         this.sounds = [];
         this.bonusSounds = [];
+        this.sound_switch = [];
 
         let offSound = undefined;
 
@@ -86,11 +87,12 @@ export default class Block {
         const pipe = new Pipe();
         tunnel.add(pipe);
 
-        let x = new JunctionBox(material);
+        let junction_box = false;
         // add every X blocks a junction box
         if( counter % 4 === 0) {
-            // tunnel.add( line );
-            tunnel.add( x );
+            junction_box = new JunctionBox(material, this.sound_switch);
+            tunnel.add( junction_box );
+            this.button = junction_box.userData.button;
         }
 
         let turnLight = false;
@@ -129,7 +131,7 @@ export default class Block {
         }
 
         this.on = function() {
-            if( x ) x.userData.normal();
+            if( junction_box ) junction_box.userData.normal();
             if( rectLight ) rectLight.on();
             if( turnLight ) turnLight.off();
             if( audio ) {
@@ -152,9 +154,9 @@ export default class Block {
             // if( special ) return; // no sound because its still turned on?
             this.sounds.forEach(sound => sound.play() );
         }
-        let self = this;
+
         this.off = function() {
-            if( x ) x.userData.emergency();
+            if( junction_box ) junction_box.userData.emergency();
             if( rectLight ) rectLight.off();
             if( turnLight ) turnLight.on();
             if( audio ) audio.stop();

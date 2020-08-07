@@ -1,5 +1,6 @@
 import $ from "jquery";
 import { library, icon, layer } from '@fortawesome/fontawesome-svg-core';
+import Config from '../../data/config';
 import { 
     faRedoAlt,
     faSkullCrossbones,
@@ -18,6 +19,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 library.add(faExpandArrowsAlt);
 
+
+
 export default class Hud {
     constructor(container, listener, tunneblocks) {
 
@@ -25,14 +28,14 @@ export default class Hud {
         button.innerHTML = icon(
             faSkullCrossbones, 
             // { styles: { color: "#fff", filter:"drop-shadow(0px 0px 5px rgba(255,255,255,1))" }}, 
-            { classes: ["mr-2", "text-white"] }
-            ).html+ "Anybody here?";
+            { classes: ["mr-0", "text-danger"] }
+            ).html;
         button.style.textShadow = "0 0 8px white";
-        button.className = "btn btn-danger btn-lg";
+        button.className = "btn btn-danger btn-lg bg-transparent border-0";
         this.playButton = button;
 
         const button2 = document.createElement("button");
-        button2.innerHTML = icon(faRedoAlt, { classes: ["mr-2", "fa-sm", "text-primary"] }).html + "restart";
+        button2.innerHTML = icon(faRedoAlt, { classes: ["mr-0", "fa-sm", "text-primary"] }).html;
         button2.style.textShadow = "0 0 8px white";
         button2.className = "btn btn-dark btn-lg bg-transparent ml-1";
         button2.style.border = 0;
@@ -40,7 +43,7 @@ export default class Hud {
         this.resetButton = button2;
 
         const div = document.createElement("div");
-        div.className = "d-flex justify-content-center align-items-center position-absolute fixed-bottom mb-5";
+        div.className = "d-flex justify-content-center align-items-center position-absolute fixed-bottom mb-2";
         div.appendChild(button);
         div.appendChild(button2);
         container.appendChild(div);
@@ -78,7 +81,7 @@ export default class Hud {
                     Tunnel Demo (2019)
                 </div>
                 <div class="card-body bg-dark">
-                    Three.js r107, ShaderParticleEngine, RectArea Lights, Postprocessing
+                    Three.js r119, Shader-Particle-Engine, Rectangle-Area Lights, Postprocessing
                 </div>
             </div>
             <div class="card bg-secondary text-light">
@@ -115,6 +118,10 @@ export default class Hud {
                             <td>kingof_thelab</td>
                             <td><a href="https://freesound.org/people/kingof_thelab/sounds/340255/" target="_blank">Steam Loop Body</a></td>
                         </tr>
+                        <tr>
+                            <td>LamaMakesMusic</td>
+                            <td><a href="https://freesound.org/people/LamaMakesMusic/sounds/403537/" target="_blank">Door_Heavy_Reverb_Open_Close</a></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -150,7 +157,7 @@ export default class Hud {
         <div class="input-group-prepend">
             <div class="input-group-text" id="btnGroupAddon">/?lights=</div>
         </div>
-        <input type="number" class="form-control" placeholder="#" id="lightInput" aria-label="Input group example" aria-describedby="btnGroupAddon">
+        <input type="number" class="form-control" placeholder="`+Config.block.count+`" id="lightInput" aria-label="Input group example" aria-describedby="btnGroupAddon">
         <button type="button" onclick="{ 
             window.location.href = location.protocol + '//' + location.host + location.pathname +'?lights='+ document.getElementById('lightInput').value; 
         }" class="btn btn-secondary">reload</button>
