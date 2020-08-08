@@ -22,7 +22,7 @@ library.add(faExpandArrowsAlt);
 
 
 export default class Hud {
-    constructor(container, listener, tunneblocks) {
+    constructor(container) {
 
         const div = document.createElement("div");
         div.className = "d-flex justify-content-between align-items-center position-absolute fixed-bottom mb-2 mr-2";
