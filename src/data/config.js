@@ -33,7 +33,7 @@ export default {
     CAoffset: 0.001
   },
   block: {
-    count: 4,
+    count: 3,
     depth: 8,
     width: 4,
     height: 2.4,
