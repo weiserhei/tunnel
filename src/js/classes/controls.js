@@ -8,6 +8,7 @@ import Config from './../../data/config';
 export default class Controls {
   constructor(camera, container, scene) {
     const cc = Config.controls;
+
     // const controls = new OrbitControls(camera, container);
     // this.threeControls = controls;
     this.camera = camera;
@@ -35,15 +36,15 @@ export default class Controls {
     let mouseXpercent = 0;
     let mouseYpercent = 0;
 
-    var upIsDown = false;
-    var downIsDown = false;
-    var leftIsDown = false;
-    var rightIsDown = false;
+    // var upIsDown = false;
+    // var downIsDown = false;
+    // var leftIsDown = false;
+    // var rightIsDown = false;
 
-    let camy = Config.camera.position.y;
-    let distance = Config.camera.position.z;
-    let angle = 0;
-    let toangle = angle;
+    // let camy = Config.camera.position.y;
+    // let distance = Config.camera.position.z;
+    // let angle = 0;
+    // let toangle = angle;
         
     container.addEventListener( 'mousemove', onDocumentMouseMove, false );
     // document.addEventListener( 'touchstart', onTouchStart, false );
@@ -87,10 +88,9 @@ export default class Controls {
         // if (rightIsDown && angle < 0.4) {angle+= 0.01};
         // toangle += (angle - toangle)/20;
 
-        camera.position.x = Math.sin(toangle) * distance;
-        camera.position.z = Math.cos(toangle) * distance;
-        
-        camera.position.y += (camy - camera.position.y) / 10;
+        // camera.position.x = Math.sin(toangle) * distance;
+        // camera.position.z = Math.cos(toangle) * distance;
+        // camera.position.y += (camy - camera.position.y) / 10;
         
         targetCamera.x += (-mouseXpercent * 5 - targetCamera.x) / 10;
         targetCamera.y += (-(mouseYpercent * 5) +1 - targetCamera.y) / 50;
