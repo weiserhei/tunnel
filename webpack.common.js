@@ -14,8 +14,12 @@ module.exports = {
         // }),
         new HtmlWebpackPlugin({
             title: 'Tunnel',
-            meta: {"viewport": 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'},
-            favicon: ""
+            meta: {
+                "viewport": 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0',
+                "og:title": { property: "og:title", content: "Tunnel (2019)" },
+                "og:image": { property: "og:image", content: "https://weiserhei.github.io/tunnel/ogimage.jpg" },
+                "og:url": { property: "og:url", content: "https://weiserhei.github.io/tunnel/dist/" },
+            },
             // template: 'src/test.html'
         })
     ],
