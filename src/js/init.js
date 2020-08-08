@@ -169,7 +169,7 @@ export default function () {
         audio2.setVolume(0.5);
         const index = blocks.length < 2 ? 0 : Config.rectLight.crash.number-1;
         blocks[index].offSound(audio2);
-        blocks[index].addParticle( particles );
+        blocks[index].addParticle( particles, camera.threeCamera );
     });
 
     audioLoader.load( S_breaker, function( buffer ) {
@@ -207,10 +207,6 @@ export default function () {
         particles.update(delta);
         ic.update(delta);
         controls.update();
-
-        // let insetWidth = window.innerHeight / 4; // square
-        // let insetHeight = window.innerHeight / 4;
-        // matLine.resolution.set( insetWidth, insetHeight ); // resolution of the inset viewport
 	}
 
 	function animate() {

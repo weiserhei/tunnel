@@ -12,12 +12,14 @@ import {
     MeshNormalMaterial,
     MeshBasicMaterial,
     Scene,
+    Vector3,
 } from "three";
 
 import TurnLight from "./turnLight";
 import RectLight from "./rectLight";
 import Pipe from "./pipe";
 import JunctionBox from "./junction_box";
+import ScreenShake from "./screenShake";
 
 
 import T_205_diffuse from "../../textures/pattern_205/diffuse.jpg";
@@ -107,13 +109,19 @@ export default class Block {
         // rectLight.off();
 
         let particles;
-        this.addParticle = function(particle) {
+        let screenShake;
+        this.addParticle = function(particle, camera) {
+            // add particles and camera shake for explosion
             particles = particle;
+            screenShake = new ScreenShake(camera);
         }
 
         this.update = function(delta) {
             if( turnLight ) turnLight.update(delta);
             if( rectLight && special ) rectLight.update(delta);
+            if( screenShake ) {
+                screenShake.update();
+            }
         }
 
         this.offSound = function(sound) {
@@ -166,7 +174,11 @@ export default class Block {
                 this.sounds.forEach(sound => sound.play() );
             }
             if (this.bonusSounds) {
-                if(particles) particles.start();
+                if(particles) {
+                    // explosion happening
+                    particles.start();
+                    screenShake.shake( new Vector3(Math.random(), 0.1, 0.2), 300 /* ms */ );
+                }
                 this.bonusSounds.forEach(sound => sound.play());
             }
         }
