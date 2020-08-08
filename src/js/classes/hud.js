@@ -19,8 +19,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 library.add(faExpandArrowsAlt);
 
-
-
 export default class Hud {
     constructor(container) {
 
@@ -173,6 +171,10 @@ export default class Hud {
                         <tr>
                             <td>LamaMakesMusic</td>
                             <td><a href="https://freesound.org/people/LamaMakesMusic/sounds/403537/" target="_blank">Door_Heavy_Reverb_Open_Close</a></td>
+                        </tr>
+                        <tr>
+                            <td> felixmariotto </td>
+                            <td><a href="https://github.com/felixmariotto/three-screenshake" target="_blank">Camera Shake</a></td>
                         </tr>
                         </tbody>
                     </table>
