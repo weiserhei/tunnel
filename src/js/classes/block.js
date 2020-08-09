@@ -1,4 +1,3 @@
-
 import { 
     TextureLoader,
     BoxGeometry,
@@ -14,7 +13,9 @@ import {
     Scene,
     Vector3,
 } from "three";
+import TWEEN from "@tweenjs/tween.js";
 
+import Config from '../../data/config';
 import TurnLight from "./turnLight";
 import RectLight from "./rectLight";
 import Pipe from "./pipe";
@@ -28,9 +29,6 @@ import T_205_specular from "../../textures/pattern_205/specular.jpg";
 // import T_207_diffuse from "../../textures/pattern_207/diffuse.jpg";
 // import T_207_normal from "../../textures/pattern_207/normal.jpg";
 // import T_207_specular from "../../textures/pattern_207/specular.jpg";
-import Config from '../../data/config';
-
-import TWEEN from "@tweenjs/tween.js";
 
 const textureloader = new TextureLoader();
 const colorMap = textureloader.load(T_205_diffuse);

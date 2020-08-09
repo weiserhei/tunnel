@@ -1,4 +1,5 @@
 import { WebGLRenderer, PCFSoftShadowMap } from 'three';
+
 import Config from './../../data/config';
 
 // Main webGL renderer class

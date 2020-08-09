@@ -10,8 +10,10 @@ import {
     PlaneBufferGeometry,
     MeshNormalMaterial,
 } from "three";
-import Config from '../../data/config';
 import TWEEN from '@tweenjs/tween.js';
+
+import Config from '../../data/config';
+
 
 export default class JunctionBox {
     constructor(material, sound) {

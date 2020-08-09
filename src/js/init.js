@@ -21,14 +21,10 @@ import {
     EffectPass,
     RenderPass
 } from "postprocessing";
+import TWEEN from "@tweenjs/tween.js";
 import Stats from 'stats.js';
 
-import { ImprovedNoise } from "three/examples/jsm/math/ImprovedNoise";
-import { Line2  } from 'three/examples/jsm/lines/Line2.js';
-import { LineMaterial   } from 'three/examples/jsm/lines/LineMaterial.js';
-import { LineGeometry    } from 'three/examples/jsm/lines/LineGeometry.js';
-import { GeometryUtils } from 'three/examples/jsm/utils/GeometryUtils.js';
-
+import Config from './../data/config';
 import Controls from './classes/controls';
 import Renderer from './classes/renderer';
 import Camera from './classes/camera';
@@ -37,7 +33,6 @@ import LightManager from './classes/lightManager';
 import Block from './classes/block';
 import Particles from './classes/particles';
 
-import Config from './../data/config';
 import S_breaker from "../media/131599__modulationstation__kill-switch-large-breaker-switch.ogg";
 import S_zombi from "../media/326261__isaria__zombie-purr-2.wav";
 import S_alarm from "../media/435666__mirkosukovic__alarm-siren.wav";
@@ -46,7 +41,6 @@ import S_explosion from "../media/80401__steveygos93__explosion2.ogg";
 // import S_rocker from "../media/219564__qubodup__rocker-spring-light-switch.ogg";
 import S_rocker from "../media/403537__lamamakesmusic__door-heavy-reverb-open-close.ogg";
 
-import TWEEN from "@tweenjs/tween.js";
 
 export default function () {
 

@@ -1,9 +1,10 @@
 import { LoadingManager, TextureLoader } from 'three';
 // import './../../scss/loader.scss';
-import './../../css/loader.css';
 import * as $ from "jquery";
 
 // https://codepen.io/ZyrianovViacheslav/pen/wWVrLQ
+import './../../css/loader.css';
+
 
 export default class Loader {
   constructor(container) {

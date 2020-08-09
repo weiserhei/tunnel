@@ -11,6 +11,7 @@ import {
 
 import Config from '../../data/config';
 
+
 export default class TurnLight {
     constructor(block, counter) {
 

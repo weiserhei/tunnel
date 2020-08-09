@@ -1,6 +1,8 @@
-import $ from "jquery";
-import Hud from "./hud";
 import { Raycaster, Vector2 } from "three";
+import $ from "jquery";
+
+import Hud from "./hud";
+
 
 function toggleFullScreen() {
     // https://developers.google.com/web/fundamentals/native-hardware/fullscreen/
