@@ -1,11 +1,20 @@
-import { PositionalAudio, AudioLoader, TextureLoader, Color, Vector3, NormalBlending } from 'three';
+import { 
+    PositionalAudio,
+    AudioLoader,
+    TextureLoader,
+    Color,
+    Vector3,
+    NormalBlending 
+} from 'three';
 import SPE from "shader-particle-engine";
+
+import Config from '../../data/config';
 
 import cloud from "../../images/cloud.png";
 // import cloud from "../../images/smokeparticle.png";
 // import soundSteam from "../../media/steam_loop.ogg";
 import soundSteam from "../../media/340255__kingof-thelab__steamloopbody.wav";
-import Config from '../../data/config';
+
 
 export default class Particles {
     constructor(scene, listener) {

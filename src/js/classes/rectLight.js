@@ -1,6 +1,3 @@
-import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
-RectAreaLightUniformsLib.init();
-
 import {
     Mesh,
     BoxBufferGeometry,
@@ -10,7 +7,8 @@ import {
     Math as TMath,
     Vector3
 } from "three";
-
+import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
+RectAreaLightUniformsLib.init();
 import TWEEN from "@tweenjs/tween.js";
 
 import Config from '../../data/config';

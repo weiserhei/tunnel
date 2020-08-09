@@ -8,7 +8,6 @@ import {
     PointLight,
     PointLightHelper
   } from 'three';
-
   import TWEEN from '@tweenjs/tween.js';
   
   import Config from '../../data/config';

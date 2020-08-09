@@ -1,6 +1,5 @@
 import $ from "jquery";
 import { library, icon, layer } from '@fortawesome/fontawesome-svg-core';
-import Config from '../../data/config';
 import { 
     faRedoAlt,
     faSkullCrossbones,
@@ -17,7 +16,11 @@ import {
     faCircle,
     faWrench
 } from '@fortawesome/free-solid-svg-icons';
+
+import Config from '../../data/config';
+
 library.add(faExpandArrowsAlt);
+
 
 export default class Hud {
     constructor(container) {

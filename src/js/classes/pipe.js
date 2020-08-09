@@ -9,6 +9,7 @@ import {
     MeshPhysicalMaterial,
     MeshStandardMaterial
 } from "three";
+
 import Config from '../../data/config';
 
 import T_205_diffuse from "../../textures/pattern_205/diffuse.jpg";
@@ -41,6 +42,7 @@ const material2 = material.clone();
 material.roughness = 0.2;
 material.color.setHex(0xaaaaaa);
 // material.emissive.setHex(0xFFAA00);
+
 
 export default class Pipe {
     constructor() {

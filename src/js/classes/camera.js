@@ -1,4 +1,5 @@
 import { PerspectiveCamera } from 'three';
+
 import Config from '../../data/config';
 
 // Class that creates and updates the main camera
