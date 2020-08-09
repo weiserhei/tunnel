@@ -36,6 +36,7 @@
     "imports-loader": "^0.8.0",
     "stats.js": "^0.17.0",
     "style-loader": "^0.23.1",
+    "three-screenshake": "git+https://github.com/weiserhei/three-screenshake.git#9c3d8a042aada7452005b72d28dea395595394a3",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
@@ -43,11 +44,11 @@
   },
   "dependencies": {
     "@tweenjs/tween.js": "^17.4.0",
-    "bootstrap": "^4.5.1",
+    "bootstrap": "^4.5.2",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
     "postprocessing": "^6.16.0",
-    "shader-particle-engine": "git+https://github.com/blaze33/ShaderParticleEngine.git",
+    "shader-particle-engine": "git+https://github.com/blaze33/ShaderParticleEngine.git#d019c8bf3766997f39dccda943fcee9586e84d94",
     "three": ">=0.116.0"
   }
 }
