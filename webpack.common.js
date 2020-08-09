@@ -21,12 +21,14 @@ module.exports = {
                 "og:image": { property: "og:image", content: "https://weiserhei.github.io/tunnel/ogimage.jpg" },
                 "og:url": { property: "og:url", content: "https://weiserhei.github.io/tunnel/dist/" },
             },
-            // template: 'src/test.html'
         })
     ],
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist')
+    },
+    optimization: {
+        splitChunks: { name: 'vendor', chunks: 'all' }
     },
     // resolve: {
     //     alias: {
@@ -41,38 +43,37 @@ module.exports = {
                 // or it will fallback and doesnt work!
                 test: require.resolve("shader-particle-engine"),
                 use: ['imports-loader?THREE=three', 'exports-loader?SPE']
-
             },
-		// {
-		// 	test: /\.(obj|mtl)$/,
-		// 	use: { loader: 'file-loader', options: { outputPath: 'objs' } }
-        // },
-        {
-            test: /\.(ogg|mp3|wav)$/,
-            use: { loader: 'file-loader', options: { outputPath: 'media' } }
-        },
-        {
-            test: /\.css$/,
-            use: ['style-loader', 'css-loader']
-        },
-        {
-            test: /\.(png|svg|jpg|gif)$/,
-            use: [
-                { 
-                    loader: 'file-loader',
-                    options: { outputPath: 'img' } // where to place images referenced in CSS and modules
-                }
-            ]
-        },
-        {
-            test: /\.(woff|woff2|eot|ttf|otf)$/,
-            use: [
-                {
-                    loader: 'file-loader',
-                    options: { outputPath: 'fonts' }
-                }
-            ]
-        }
+            // {
+            // 	test: /\.(obj|mtl)$/,
+            // 	use: { loader: 'file-loader', options: { outputPath: 'objs' } }
+            // },
+            {
+                test: /\.(ogg|mp3|wav)$/,
+                use: { loader: 'file-loader', options: { outputPath: 'media' } }
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    { 
+                        loader: 'file-loader',
+                        options: { outputPath: 'img' } // where to place images referenced in CSS and modules
+                    }
+                ]
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: { outputPath: 'fonts' }
+                    }
+                ]
+            }
         ]
     }
 };
