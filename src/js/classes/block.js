@@ -19,8 +19,7 @@ import TurnLight from "./turnLight";
 import RectLight from "./rectLight";
 import Pipe from "./pipe";
 import JunctionBox from "./junction_box";
-import ScreenShake from "./screenShake";
-
+import ScreenShake from "three-screenShake";
 
 import T_205_diffuse from "../../textures/pattern_205/diffuse.jpg";
 import T_205_normal from "../../textures/pattern_205/normal.jpg";
@@ -60,6 +59,7 @@ material.metalnessMap.anisotropy = Config.maxAnisotropy;
 
 export default class Block {
     constructor(counter, audio) {
+
         this.sounds = [];
         this.bonusSounds = [];
         this.sound_switch = [];
@@ -110,10 +110,10 @@ export default class Block {
 
         let particles;
         let screenShake;
-        this.addParticle = function(particle, camera) {
+        this.addParticle = function(particle, cam) {
             // add particles and camera shake for explosion
             particles = particle;
-            screenShake = new ScreenShake(camera);
+            screenShake = new ScreenShake(cam);
         }
 
         this.update = function(delta) {
