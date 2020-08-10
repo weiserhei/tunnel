@@ -20,7 +20,7 @@ import TurnLight from "./turnLight";
 import RectLight from "./rectLight";
 import Pipe from "./pipe";
 import JunctionBox from "./junction_box";
-import ScreenShake from "three-screenShake";
+import ScreenShake from "three-screenshake";
 
 import T_205_diffuse from "../../textures/pattern_205/diffuse.jpg";
 import T_205_normal from "../../textures/pattern_205/normal.jpg";
