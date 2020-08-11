@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-    entry: './src/js/index.js',
     plugins: [
         new CleanWebpackPlugin(),
         // new webpack.ProvidePlugin({
@@ -23,6 +22,7 @@ module.exports = {
             },
         })
     ],
+    entry: './src/js/index.js',
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist')
