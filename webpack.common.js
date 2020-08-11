@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require('webpack'); //to access built-in plugins
+// const webpack = require('webpack'); //to access built-in plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -39,11 +39,32 @@ module.exports = {
         rules: [
             {
                 // shim because SPE 1.0.6 is not a module
-                // delete SPEs dependency on threejs in package-lock.json 
-                // or it will fallback and doesnt work!
+                // use third party package because its hardcoded dependency on three r87
+                // import three as THREE and export SPE
                 test: require.resolve("shader-particle-engine"),
-                use: ['imports-loader?THREE=three', 'exports-loader?SPE']
+                use: [
+                    'imports-loader?imports[]=namespace|three|THREE',
+                    'exports-loader?exports=default|SPE'
+                ]
             },
+            // verbose declaration of the line above
+            // {
+            //     test: require.resolve("shader-particle-engine"),
+            //     loader: 'imports-loader',
+            //     options: {
+            //         type: "module",
+            //         imports: [
+            //             'namespace three THREE'
+            //         ]
+            //     }
+            // },
+            // {
+            //     test: require.resolve("shader-particle-engine"),
+            //     loader: 'exports-loader',
+            //     options: {
+            //         exports: 'default SPE'
+            //     }
+            // },
             // {
             // 	test: /\.(obj|mtl)$/,
             // 	use: { loader: 'file-loader', options: { outputPath: 'objs' } }

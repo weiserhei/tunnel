@@ -6,7 +6,9 @@ import {
     Vector3,
     NormalBlending 
 } from 'three';
+// import * as SPE from "shader-particle-engine";
 import SPE from "shader-particle-engine";
+// import SPE from 'shader-particle-engine/build/SPE'
 
 import Config from '../../data/config';
 
