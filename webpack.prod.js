@@ -1,14 +1,16 @@
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
-const CopyPlugin = require('copy-webpack-plugin');
+// const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'production',
   plugins: [
-    new CopyPlugin([
-      // { from: 'src/models', to: 'models' },
-      // { from: 'src/libs', to: 'libs' },
-    ]),
+    // new CopyPlugin({
+    //   patterns: [
+    //     { from: 'src/models', to: 'models' },
+    //     { from: 'src/libs', to: 'libs' },
+    //   ],
+    // }),
   ],
   performance: { 
     // hints: false,
