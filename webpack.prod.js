@@ -1,10 +1,12 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 // const CopyPlugin = require('copy-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = merge(common, {
   mode: 'production',
   plugins: [
+    new BundleAnalyzerPlugin(),
     // new CopyPlugin({
     //   patterns: [
     //     { from: 'src/models', to: 'models' },

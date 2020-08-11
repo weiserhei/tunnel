@@ -45,6 +45,7 @@
     "three": ">=0.119.1",
     "three-screenshake": "git+https://github.com/weiserhei/three-screenshake.git#9c3d8a042aada7452005b72d28dea395595394a3",
     "webpack": "^4.44.1",
+    "webpack-bundle-analyzer": "^3.8.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^5.1.1"
