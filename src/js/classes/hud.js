@@ -1,128 +1,130 @@
 import $ from "jquery";
-import { library, icon } from '@fortawesome/fontawesome-svg-core';
-import { 
-    faRedoAlt,
-    faBiohazard,
-    faVolumeUp,
-    faVolumeMute,
-    faExpandArrowsAlt,
-    faExpand,
-    faQuestionCircle,
-    faCompress,
-    faCog,
-} from '@fortawesome/free-solid-svg-icons';
+import { library, icon } from "@fortawesome/fontawesome-svg-core";
+import {
+  faRedoAlt,
+  faBiohazard,
+  faVolumeUp,
+  faVolumeMute,
+  faExpandArrowsAlt,
+  faExpand,
+  faQuestionCircle,
+  faCompress,
+  faCog,
+} from "@fortawesome/free-solid-svg-icons";
 
-import Config from '../../data/config';
+import Config from "../../data/config";
 
 library.add(faExpandArrowsAlt);
 
-
 export default class Hud {
-    constructor(container) {
+  constructor(container) {
+    const div = document.createElement("div");
+    div.className =
+      "d-flex justify-content-between align-items-center position-absolute fixed-bottom mb-2 mr-2";
+    container.appendChild(div);
 
-        const div = document.createElement("div");
-        div.className = "d-flex justify-content-between align-items-center position-absolute fixed-bottom mb-2 mr-2";
-        container.appendChild(div);
+    const container1 = document.createElement("div");
+    const container2 = document.createElement("div");
+    const container3 = document.createElement("div");
+    div.appendChild(container1);
+    div.appendChild(container2);
+    div.appendChild(container3);
 
-        const container1 = document.createElement("div");
-        const container2 = document.createElement("div");
-        const container3 = document.createElement("div");
-        div.appendChild(container1);
-        div.appendChild(container2);
-        div.appendChild(container3);
+    const button = document.createElement("span");
+    button.innerHTML = icon(faBiohazard, {
+      styles: { color: "#fff", filter: "drop-shadow(0px 0px 3px rgba(0,0,0))" },
+      classes: ["fa-lg", "text-warning"],
+    }).html;
+    button.className = "bg-transparent";
+    button.setAttribute("type", "button");
+    this.playButton = button;
 
-        const button = document.createElement("span");
-        button.innerHTML = icon(
-            faBiohazard, { 
-                styles: { color: "#fff", filter:"drop-shadow(0px 0px 3px rgba(0,0,0))" },
-                classes: ["fa-lg", "text-warning"]
-            }).html;
-        button.className = "bg-transparent";
-        button.setAttribute("type", "button");
-        this.playButton = button;
+    const button2 = document.createElement("span");
+    button2.innerHTML = icon(faRedoAlt, {
+      classes: ["fa-lg", "text-primary"],
+    }).html;
+    button2.style.textShadow = "0 0 8px white";
+    button2.className = "bg-transparent";
+    button2.setAttribute("type", "button");
+    $(button2).hide();
+    this.resetButton = button2;
 
-        const button2 = document.createElement("span");
-        button2.innerHTML = icon(faRedoAlt, { classes: ["fa-lg", "text-primary"] }).html;
-        button2.style.textShadow = "0 0 8px white";
-        button2.className = "bg-transparent";
-        button2.setAttribute("type", "button");
-        $(button2).hide();
-        this.resetButton = button2;
+    container2.appendChild(button);
+    container2.appendChild(button2);
 
-        container2.appendChild(button);
-        container2.appendChild(button2);
-                  
-        const info = document.createElement("button");
-        // info.className = "btn btn-black position-absolute fixed-bottom ml-2 mb-2 btn-sm";
-        info.className = "shadow-none text-black ml-3 bg-transparent border-0 p-2";
-        info.setAttribute("type", "button");
-        const i = icon(
-            faQuestionCircle, { 
-                // styles: { color: "#fff", filter:"drop-shadow(0px 0px 0px rgba(255,255,255,1))" },
-                classes: ["fa-lg", "text-dark"] 
-            }).html;
-            info.innerHTML = i;
-        info.onclick = function() { 
-            $(overlay2).fadeToggle();
-            if ( $(overlay).is(":visible") ) {
-                $(overlay).hide();
-            }
-        }
+    const info = document.createElement("button");
+    // info.className = "btn btn-black position-absolute fixed-bottom ml-2 mb-2 btn-sm";
+    info.className = "shadow-none text-black ml-3 bg-transparent border-0 p-2";
+    info.setAttribute("type", "button");
+    const i = icon(faQuestionCircle, {
+      // styles: { color: "#fff", filter:"drop-shadow(0px 0px 0px rgba(255,255,255,1))" },
+      classes: ["fa-lg", "text-dark"],
+    }).html;
+    info.innerHTML = i;
+    info.onclick = function () {
+      $(overlay2).fadeToggle();
+      if ($(overlay).is(":visible")) {
+        $(overlay).hide();
+      }
+    };
 
-        const settings = document.createElement("button");
-        // settings.className = "btn btn-black position-absolute fixed-bottom ml-2 mb-5 btn-sm";
-        settings.className = "text-black ml-3 bg-transparent border-0 p-2";
-        settings.setAttribute("type", "button");
-        settings.innerHTML = icon(faCog, { 
-                // styles: { color: "#fff", filter:"drop-shadow(0px 0px 5px rgba(255,255,255,1))" },
-                classes: ["fa-lg", "text-dark"] 
-            }).html;
-        // info.innerHTML = icon(
-        //     faCogs,
-            // { styles: { color: "#fff", filter:"drop-shadow(0px 0px 5px rgba(255,255,255,1))" },
-            // classes: ["text-dark", "fa-lg"] }
-        //     ).html;
-        // container.appendChild(settings);
-        settings.onclick = function() { 
-            $(overlay).fadeToggle();
-            if ( $(overlay2).is(":visible") ) {
-                $(overlay2).hide();
-            }
-        }
-        
-        const tray = document.createElement("button");
-        tray.className = "text-black ml-3 bg-transparent border-0 p-2";
-        tray.setAttribute("type", "button");
-        this.vol = icon(faVolumeUp, { classes: ["fa-lg", "text-primary"] }).html;
-        tray.innerHTML = this.vol;
-        this.mute = icon(faVolumeMute, { classes: ["text-dark", "fa-lg"] }).html;
-        this.tray = tray;
+    const settings = document.createElement("button");
+    // settings.className = "btn btn-black position-absolute fixed-bottom ml-2 mb-5 btn-sm";
+    settings.className = "text-black ml-3 bg-transparent border-0 p-2";
+    settings.setAttribute("type", "button");
+    settings.innerHTML = icon(faCog, {
+      // styles: { color: "#fff", filter:"drop-shadow(0px 0px 5px rgba(255,255,255,1))" },
+      classes: ["fa-lg", "text-dark"],
+    }).html;
+    // info.innerHTML = icon(
+    //     faCogs,
+    // { styles: { color: "#fff", filter:"drop-shadow(0px 0px 5px rgba(255,255,255,1))" },
+    // classes: ["text-dark", "fa-lg"] }
+    //     ).html;
+    // container.appendChild(settings);
+    settings.onclick = function () {
+      $(overlay).fadeToggle();
+      if ($(overlay2).is(":visible")) {
+        $(overlay2).hide();
+      }
+    };
 
-        container1.appendChild(info);
-        container1.appendChild(settings);
-        container1.appendChild(tray);
+    const tray = document.createElement("button");
+    tray.className = "text-black ml-3 bg-transparent border-0 p-2";
+    tray.setAttribute("type", "button");
+    this.vol = icon(faVolumeUp, { classes: ["fa-lg", "text-primary"] }).html;
+    tray.innerHTML = this.vol;
+    this.mute = icon(faVolumeMute, { classes: ["text-dark", "fa-lg"] }).html;
+    this.tray = tray;
 
-        this.fullIcon = icon(faExpand, { classes: ["text-dark", "fa-lg"] }).html;
-        this.shrinkIcon = icon(faCompress, { classes: ["text-dark", "fa-lg"] }).html;
-        this.button3 = document.createElement("span");
-        this.button3.className = "text-black ml-3 bg-transparent border-0 p-2";
-        this.button3.setAttribute("type", "button");
-        this.button3.style.right = 0;
-        this.button3.style.bottom = 0;
-        // button3.appendChild(fullIcon);
-        this.button3.innerHTML = this.fullIcon;
-        // div.appendChild(this.button3);
-        container3.appendChild(this.button3);
-        // this.button3.onclick = openFullscreen.bind(container);
-        
-        const overlay2 = document.createElement("div");
-        overlay2.className = "position-absolute bg-dark text-secondary p-2 m-4 card";
-        overlay2.style.top = 0;
-        overlay2.innerHTML = 
-        // <li class="list-group-item bg-info text-light">
-        //     Sound Reference
-        // </li>
-        `
+    container1.appendChild(info);
+    container1.appendChild(settings);
+    container1.appendChild(tray);
+
+    this.fullIcon = icon(faExpand, { classes: ["text-dark", "fa-lg"] }).html;
+    this.shrinkIcon = icon(faCompress, {
+      classes: ["text-dark", "fa-lg"],
+    }).html;
+    this.button3 = document.createElement("span");
+    this.button3.className = "text-black ml-3 bg-transparent border-0 p-2";
+    this.button3.setAttribute("type", "button");
+    this.button3.style.right = 0;
+    this.button3.style.bottom = 0;
+    // button3.appendChild(fullIcon);
+    this.button3.innerHTML = this.fullIcon;
+    // div.appendChild(this.button3);
+    container3.appendChild(this.button3);
+    // this.button3.onclick = openFullscreen.bind(container);
+
+    const overlay2 = document.createElement("div");
+    overlay2.className =
+      "position-absolute bg-dark text-secondary p-2 m-4 card";
+    overlay2.style.top = 0;
+    overlay2.innerHTML =
+      // <li class="list-group-item bg-info text-light">
+      //     Sound Reference
+      // </li>
+      `
         <div class="card-body">
             <div class="card mb-3 bg-secondary text-white">
                 <div class="card-header">
@@ -178,30 +180,30 @@ export default class Hud {
                     </table>
                 </div>
         </div>`;
-        $(overlay2).hide();
-        container.appendChild(overlay2);
-        
-        const overlay = document.createElement("div");
-        overlay.className = "position-absolute bg-dark text-secondary p-2 m-4 card";
-        overlay.style.top = 0;
-        overlay.innerHTML = 
-        // '<input type="text" class="form-control" value="?/lights=">';
-        // <input type="text" class="form-control" value="?/lights=">
-        `
+    $(overlay2).hide();
+    container.appendChild(overlay2);
+
+    const overlay = document.createElement("div");
+    overlay.className = "position-absolute bg-dark text-secondary p-2 m-4 card";
+    overlay.style.top = 0;
+    overlay.innerHTML =
+      // '<input type="text" class="form-control" value="?/lights=">';
+      // <input type="text" class="form-control" value="?/lights=">
+      `
         <div class="card-body">
         <div class="input-group" role="group" aria-label="Basic example">
         <div class="input-group-prepend">
             <div class="input-group-text" id="btnGroupAddon">/?lights=</div>
         </div>
-        <input type="number" class="form-control" placeholder="`+Config.block.count+`" id="lightInput" aria-label="Input group example" aria-describedby="btnGroupAddon">
+        <input type="number" class="form-control" placeholder="` +
+      Config.block.count +
+      `" id="lightInput" aria-label="Input group example" aria-describedby="btnGroupAddon">
         <button type="button" onclick="{ 
             window.location.href = location.protocol + '//' + location.host + location.pathname +'?lights='+ document.getElementById('lightInput').value; 
         }" class="btn btn-secondary">reload</button>
         </div>
       </div>`;
-        $(overlay).hide();
-        container.appendChild(overlay);
-
-    }
-
+    $(overlay).hide();
+    container.appendChild(overlay);
+  }
 }

@@ -1,11 +1,11 @@
-import './../css/style.css';
+import "./../css/style.css";
 // import "./../scss/main.scss";
 
-import { WEBGL } from 'three/examples/jsm/WebGL.js';
-import init from './init';
+import { WEBGL } from "three/examples/jsm/WebGL.js";
+import init from "./init";
 
 if (WEBGL.isWebGLAvailable()) {
-    init();
+  init();
 } else {
   const warning = WEBGL.getWebGLErrorMessage();
   document.body.appendChild(warning);
