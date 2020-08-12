@@ -51,14 +51,11 @@ export default class InteractionController {
       reverse();
       tunnelblocks[0].button.userData.move(true);
       play();
-      // $(button).fadeOut();
-      // $(button2).fadeOut();
     };
 
     function reverse() {
       toggle = !toggle;
       blocks = tunnelblocks.slice(0);
-      // this.play();
     }
 
     function play() {
@@ -120,7 +117,7 @@ export default class InteractionController {
 
     const meshes = blocks.map((b) => b.mesh);
     let intersects = [];
-    function onMouseMove(event) {
+    function raycast(event) {
       // calculate mouse position in normalized device coordinates
       // (-1 to +1) for both components
       vector.set(
@@ -136,14 +133,14 @@ export default class InteractionController {
       }
     }
 
-    function onDocumentMouseDown() {
+    function onMouseMove(event) {
+      raycast(event);
+    }
+
+    function onDocumentMouseDown(event) {
+      raycast(event);
       if (intersects.length > 0) {
         // push button
-        // play();
-
-        // if( !toggle ) {
-        // reverse();
-        // }
         if (blocks.length === 0 || !toggle) {
           intersects[0].object.userData.move(true);
           reverse();
