@@ -1,20 +1,15 @@
 import $ from "jquery";
-import { library, icon, layer } from '@fortawesome/fontawesome-svg-core';
+import { library, icon } from '@fortawesome/fontawesome-svg-core';
 import { 
     faRedoAlt,
-    faSkullCrossbones,
     faBiohazard,
     faVolumeUp,
     faVolumeMute,
     faExpandArrowsAlt,
-    faCompressArrowsAlt,
     faExpand,
     faQuestionCircle,
     faCompress,
     faCog,
-    faCogs,
-    faCircle,
-    faWrench
 } from '@fortawesome/free-solid-svg-icons';
 
 import Config from '../../data/config';
@@ -38,9 +33,9 @@ export default class Hud {
 
         const button = document.createElement("span");
         button.innerHTML = icon(
-            faSkullCrossbones, { 
+            faBiohazard, { 
                 styles: { color: "#fff", filter:"drop-shadow(0px 0px 3px rgba(0,0,0))" },
-                classes: ["fa-lg", "text-danger"]
+                classes: ["fa-lg", "text-warning"]
             }).html;
         button.className = "bg-transparent";
         button.setAttribute("type", "button");
