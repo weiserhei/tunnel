@@ -1,6 +1,6 @@
-import { PerspectiveCamera } from 'three';
+import { PerspectiveCamera } from "three";
 
-import Config from '../../data/config';
+import Config from "../../data/config";
 
 // Class that creates and updates the main camera
 export default class Camera {
@@ -18,7 +18,7 @@ export default class Camera {
     this.updateSize(renderer);
 
     // Listeners
-    window.addEventListener('resize', () => this.updateSize(renderer), false);
+    window.addEventListener("resize", () => this.updateSize(renderer), false);
   }
 
   updateSize(renderer) {
@@ -26,7 +26,8 @@ export default class Camera {
     // const width = renderer.domElement.width * Config.dpr;
     // const height = renderer.domElement.height * Config.dpr;
     // this.threeCamera.aspect =  width / height;
-    this.threeCamera.aspect = renderer.domElement.width / renderer.domElement.height;
+    this.threeCamera.aspect =
+      renderer.domElement.width / renderer.domElement.height;
 
     // Always call updateProjectionMatrix on camera change
     this.threeCamera.updateProjectionMatrix();

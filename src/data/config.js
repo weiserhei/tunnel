@@ -5,7 +5,7 @@ export default {
   maxAnisotropy: 0,
   dpr: 1,
   scene: {
-    background: 0x070707
+    background: 0x070707,
     // background: 0xffaa00
   },
   fog: {
@@ -21,8 +21,8 @@ export default {
     position: {
       x: 0,
       y: 1.7,
-      z: -5
-    }
+      z: -5,
+    },
   },
   postprocessing: {
     focalLength: 0.8,
@@ -30,14 +30,14 @@ export default {
     darkness: 0.4,
     luminanceThreshold: 0.1,
     luminanceSmoothing: 0.2,
-    CAoffset: 0.001
+    CAoffset: 0.001,
   },
   block: {
     count: 3,
     depth: 8,
     width: 4,
     height: 2.4,
-    thickness: 0.2
+    thickness: 0.2,
   },
   rectLight: {
     mesh: {
@@ -46,7 +46,7 @@ export default {
       depth: 0.2,
       color: 0x888822,
       emissive: 0x666633,
-      offEmissive: 0x020202
+      offEmissive: 0x020202,
     },
     crash: {
       enabled: true,
@@ -55,29 +55,29 @@ export default {
     },
     position: {
       x: 0,
-      z: -2
+      z: -2,
     },
-    color: 0xFFFFAA,
+    color: 0xffffaa,
     intensity: 18,
     width: 2,
-    height: 0.2
+    height: 0.2,
   },
   turnLight: {
     // color: 0xff5500,
     color: 0xff4400,
     intensity: 0.9,
     distance: 7,
-    angle: Math.PI/2.5,
+    angle: Math.PI / 2.5,
     exponent: 1,
     decay: 1.5,
     material: {
       offEmissive: 0x050500,
-      emissive: 0xFF8800
+      emissive: 0xff8800,
       // emissive: 0xff3300
     },
     position: {
       x: 0,
-      z: 1
+      z: 1,
     },
   },
   hemiLight: {
