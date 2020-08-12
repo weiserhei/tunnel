@@ -1,6 +1,6 @@
-import { Vector3 } from 'three';
+import { Vector3 } from "three";
 
-import Config from './../../data/config';
+import Config from "./../../data/config";
 // import { createNoisyEasing, createStepEasing } from "./../utils/easings";
 // var customTween = createStepEasing(3, TWEEN.Easing.Exponential.InOut);
 
@@ -45,60 +45,54 @@ export default class Controls {
     // let distance = Config.camera.position.z;
     // let angle = 0;
     // let toangle = angle;
-        
-    container.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+    container.addEventListener("mousemove", onDocumentMouseMove, false);
     // document.addEventListener( 'touchstart', onTouchStart, false );
-    container.addEventListener( 'touchmove', onTouchMove, false );
+    container.addEventListener("touchmove", onTouchMove, false);
     // document.addEventListener( 'touchend', onTouchEnd, false );
 
-    // function onTouchStart(event) { 
+    // function onTouchStart(event) {
     //     event.preventDefault();
     // }
 
     // scene.add( camera );
 
-
-    function onTouchMove(event) { 
-        event.preventDefault();
-        onDocumentMouseMove(event.touches[0]);
+    function onTouchMove(event) {
+      event.preventDefault();
+      onDocumentMouseMove(event.touches[0]);
     }
 
-    // function onTouchEnd(event) { 
+    // function onTouchEnd(event) {
     //     event.preventDefault();
     // }
 
     function onDocumentMouseMove(event) {
-				
-        const windowHalfX = window.innerWidth >> 1;
-        const windowHalfY = window.innerHeight >> 1;
+      const windowHalfX = window.innerWidth >> 1;
+      const windowHalfY = window.innerHeight >> 1;
 
-        mouseX = ( event.clientX - windowHalfX );
-        mouseY = ( event.clientY - windowHalfY );
+      mouseX = event.clientX - windowHalfX;
+      mouseY = event.clientY - windowHalfY;
 
-        mouseXpercent = mouseX/(window.innerWidth/2);
-        mouseYpercent = mouseY/(window.innerHeight/2);
-
+      mouseXpercent = mouseX / (window.innerWidth / 2);
+      mouseYpercent = mouseY / (window.innerHeight / 2);
     }
 
-    this.update = function() {
-        // if (upIsDown && camy < 1.5) {camy++};
-        // if (downIsDown && camy > 2.2) {camy--};
+    this.update = function () {
+      // if (upIsDown && camy < 1.5) {camy++};
+      // if (downIsDown && camy > 2.2) {camy--};
 
-        // if (leftIsDown && angle > -0.4) {angle-= 0.01};
-        // if (rightIsDown && angle < 0.4) {angle+= 0.01};
-        // toangle += (angle - toangle)/20;
+      // if (leftIsDown && angle > -0.4) {angle-= 0.01};
+      // if (rightIsDown && angle < 0.4) {angle+= 0.01};
+      // toangle += (angle - toangle)/20;
 
-        // camera.position.x = Math.sin(toangle) * distance;
-        // camera.position.z = Math.cos(toangle) * distance;
-        // camera.position.y += (camy - camera.position.y) / 10;
-        
-        targetCamera.x += (-mouseXpercent * 5 - targetCamera.x) / 10;
-        targetCamera.y += (-(mouseYpercent * 5) +1 - targetCamera.y) / 50;
-        
-        camera.lookAt(targetCamera);
+      // camera.position.x = Math.sin(toangle) * distance;
+      // camera.position.z = Math.cos(toangle) * distance;
+      // camera.position.y += (camy - camera.position.y) / 10;
 
-    }
+      targetCamera.x += (-mouseXpercent * 5 - targetCamera.x) / 10;
+      targetCamera.y += (-(mouseYpercent * 5) + 1 - targetCamera.y) / 50;
 
+      camera.lookAt(targetCamera);
+    };
   }
-
 }
