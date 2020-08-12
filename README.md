@@ -3,7 +3,7 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 ![GitHub repo size](https://img.shields.io/github/repo-size/weiserhei/tunnel?style=social)
 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/weiserhei/tunnel?style=flat-square)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/weiserhei/tunnel?style=flat-square)
 
 # Tunnel (2019)
 A three.js experiment with Rectangle-Area-Lights.
