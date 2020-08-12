@@ -6,7 +6,6 @@ import {
     CylinderBufferGeometry,
     MeshLambertMaterial,
     Vector3,
-    MeshBasicMaterial,
 } from "three";
 
 import Config from '../../data/config';

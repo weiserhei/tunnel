@@ -1,5 +1,4 @@
 const path = require('path');
-// const webpack = require('webpack'); //to access built-in plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 

@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "npx eslint ./src/",
     "build": "webpack --progress --color --config webpack.prod.js",
     "dev": "webpack-dev-server --open --public --config webpack.dev.js"
   },
@@ -32,6 +33,7 @@
     "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^4.2.1",
     "dat.gui": "^0.7.7",
+    "eslint": "^7.6.0",
     "exports-loader": "^1.1.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",

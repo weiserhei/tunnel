@@ -8,7 +8,6 @@ import {
     Vector3,
     CatmullRomCurve3,
     PlaneBufferGeometry,
-    MeshNormalMaterial,
 } from "three";
 import TWEEN from '@tweenjs/tween.js';
 

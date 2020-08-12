@@ -1,5 +1,4 @@
-import { Vector3, SpotLight } from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { Vector3 } from 'three';
 
 import Config from './../../data/config';
 // import { createNoisyEasing, createStepEasing } from "./../utils/easings";
@@ -7,7 +6,7 @@ import Config from './../../data/config';
 
 // Controls based on orbit controls
 export default class Controls {
-  constructor(camera, container, scene) {
+  constructor(camera, container) {
     const cc = Config.controls;
 
     // const controls = new OrbitControls(camera, container);
@@ -64,9 +63,9 @@ export default class Controls {
         onDocumentMouseMove(event.touches[0]);
     }
 
-    function onTouchEnd(event) { 
-        event.preventDefault();
-    }
+    // function onTouchEnd(event) { 
+    //     event.preventDefault();
+    // }
 
     function onDocumentMouseMove(event) {
 				
@@ -81,7 +80,7 @@ export default class Controls {
 
     }
 
-    this.update = function( delta ) {
+    this.update = function() {
         // if (upIsDown && camy < 1.5) {camy++};
         // if (downIsDown && camy > 2.2) {camy--};
 

@@ -121,7 +121,7 @@ export default class InteractionController {
             }
         }
         
-        function onDocumentMouseDown( event ) {
+        function onDocumentMouseDown() {
             if ( intersects.length > 0 ) {
                 // push button
                 // play();
