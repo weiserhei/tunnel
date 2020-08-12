@@ -97,17 +97,31 @@ export default class InteractionController {
       toggleFullScreen();
     };
 
-    hud.tray.onclick = function () {
-      if (this.toggle) {
-        this.toggle = false;
+    let toggleAudio = false;
+    hud.volumeIcon.onclick = function () {
+      if (toggleAudio) {
         listener.setMasterVolume(1);
-        hud.tray.innerHTML = hud.vol;
+        hud.mute(toggleAudio);
       } else {
-        this.toggle = true;
         listener.setMasterVolume(0);
-        hud.tray.innerHTML = hud.mute;
+        hud.mute(toggleAudio);
       }
+      toggleAudio = !toggleAudio;
     };
+
+    // mute audio when tab is not active
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+        if (document.hidden) {
+          listener.setMasterVolume(0);
+        } else if (!toggleAudio) {
+          // only un-mute if audio isnt turned off by the user
+          listener.setMasterVolume(1);
+        }
+      },
+      false
+    );
     // <button type="button" class="close float-right" aria-label="Close">
     // <span aria-hidden="true">&times;</span>
     // </button>

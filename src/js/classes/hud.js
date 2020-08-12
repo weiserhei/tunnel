@@ -92,10 +92,18 @@ export default class Hud {
     const tray = document.createElement("button");
     tray.className = "text-black ml-3 bg-transparent border-0 p-2";
     tray.setAttribute("type", "button");
-    this.vol = icon(faVolumeUp, { classes: ["fa-lg", "text-primary"] }).html;
-    tray.innerHTML = this.vol;
-    this.mute = icon(faVolumeMute, { classes: ["text-dark", "fa-lg"] }).html;
-    this.tray = tray;
+    const vol = icon(faVolumeUp, { classes: ["fa-lg", "text-primary"] }).html;
+    tray.innerHTML = vol;
+    const mute = icon(faVolumeMute, { classes: ["text-dark", "fa-lg"] }).html;
+    this.volumeIcon = tray;
+
+    this.mute = function (value) {
+      if (value) {
+        tray.innerHTML = vol;
+      } else {
+        tray.innerHTML = mute;
+      }
+    };
 
     container1.appendChild(info);
     container1.appendChild(settings);
