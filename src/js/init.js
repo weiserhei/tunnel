@@ -8,14 +8,11 @@ import {
     Color,
     FogExp2,
     Vector2,
-    Vector3,
 } from 'three';
 import { 
     BloomEffect,
     VignetteEffect,
-    BokehEffect,
     RealisticBokehEffect,
-    DepthOfFieldEffect,
     ChromaticAberrationEffect,
     EffectComposer,
     EffectPass,
@@ -73,11 +70,11 @@ export default function () {
         focalLength:Config.postprocessing.focalLength, 
         focus: Config.postprocessing.focus
     } );
-    const dof = new DepthOfFieldEffect( camera.threeCamera, {
-            focalLength: 0.02,
-            bokehScale: 1
-            // focusDistance: 0.1
-        } );
+    // const dof = new DepthOfFieldEffect( camera.threeCamera, {
+    //         focalLength: 0.02,
+    //         bokehScale: 1
+    //         // focusDistance: 0.1
+    //     } );
 
 
     // const x = new Mesh(new BoxGeometry(1, 1, 1));
@@ -209,7 +206,7 @@ export default function () {
         update(delta);
         composer.render(delta);
 		// renderer.render(scene, camera.threeCamera);
-	};
+	}
 
 	animate();
 }

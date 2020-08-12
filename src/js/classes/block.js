@@ -2,15 +2,9 @@ import {
     TextureLoader,
     BoxGeometry,
     Matrix4,
-    MeshPhongMaterial,
-    MeshPhysicalMaterial,
     MeshStandardMaterial,
     Mesh,
     RepeatWrapping,
-    DoubleSide,
-    MeshNormalMaterial,
-    MeshBasicMaterial,
-    Scene,
     Vector3,
 } from "three";
 import TWEEN from "@tweenjs/tween.js";

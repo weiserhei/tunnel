@@ -1,12 +1,8 @@
 import {
     Mesh,
     BoxBufferGeometry,
-    MeshPhongMaterial,
     CylinderBufferGeometry,
-    MeshNormalMaterial,
     TextureLoader,
-    RepeatWrapping,
-    MeshPhysicalMaterial,
     MeshStandardMaterial
 } from "three";
 

@@ -3,18 +3,13 @@ import {
     DirectionalLight,
     CameraHelper,
     AmbientLight,
-    SpotLight,
-    SpotLightHelper,
-    PointLight,
-    PointLightHelper
-  } from 'three';
-  import TWEEN from '@tweenjs/tween.js';
-  
-  import Config from '../../data/config';
+} from 'three';
+
+import Config from '../../data/config';
   
   // Sets up and places all lights in scene
   export default class LightManager {
-    constructor(scene, camera, sky) {
+    constructor(scene, camera) {
       this.scene = scene;
       this.camera = camera;
       this.init();
