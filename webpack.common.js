@@ -16,7 +16,7 @@ module.exports = {
                 "viewport": 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0',
                 "og:title": { property: "og:title", content: "Tunnel (2019)" },
                 "og:description": { property: "og:description", content: "A three.js-experiment by weiserhei" },
-                "og:image": { property: "og:image", content: "https://github.com/weiserhei/tunnel/blob/master/ogimage.jpg" },
+                "og:image": { property: "og:image", content: "https://raw.githubusercontent.com/weiserhei/tunnel/master/ogimage.jpg" },
                 "og:url": { property: "og:url", content: "https://weiserhei.github.io/tunnel/" },
             },
         })
