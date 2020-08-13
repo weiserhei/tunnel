@@ -17,7 +17,7 @@ module.exports = {
                 "og:title": { property: "og:title", content: "Tunnel (2019)" },
                 "og:description": { property: "og:description", content: "A three.js-experiment by weiserhei" },
                 "og:image": { property: "og:image", content: "https://weiserhei.github.io/tunnel/ogimage.jpg" },
-                "og:url": { property: "og:url", content: "https://weiserhei.github.io/tunnel/dist/" },
+                "og:url": { property: "og:url", content: "https://weiserhei.github.io/tunnel/" },
             },
         })
     ],
