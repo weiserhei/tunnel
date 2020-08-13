@@ -35,7 +35,6 @@ import S_zombi from "../media/326261__isaria__zombie-purr-2.wav";
 import S_alarm from "../media/435666__mirkosukovic__alarm-siren.wav";
 import S_ballast from "../media/53680__lonemonk__switch-and-ballast-2.ogg";
 import S_explosion from "../media/80401__steveygos93__explosion2.ogg";
-// import S_rocker from "../media/219564__qubodup__rocker-spring-light-switch.ogg";
 import S_rocker from "../media/403537__lamamakesmusic__door-heavy-reverb-open-close.ogg";
 
 export default function () {
@@ -44,8 +43,8 @@ export default function () {
   let delta = 0;
   const scene = new Scene();
   scene.background = new Color(Config.scene.background);
-  scene.fog = new FogExp2(Config.fog.color, Config.fog.near);
-
+  scene.fog = new FogExp2(Config.fog.color, Config.fog.near / Config.block.count);
+  
   const stats = new Stats();
   container.appendChild(stats.dom);
 
