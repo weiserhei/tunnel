@@ -29,6 +29,7 @@ import InteractionController from "./classes/interactionController";
 import LightManager from "./classes/lightManager";
 import Block from "./classes/block";
 import Particles from "./classes/particles";
+import ParticlesSpark from "./classes/particlesSparks";
 
 import S_breaker from "../media/131599__modulationstation__kill-switch-large-breaker-switch.ogg";
 import S_zombi from "../media/326261__isaria__zombie-purr-2.wav";
@@ -43,8 +44,11 @@ export default function () {
   let delta = 0;
   const scene = new Scene();
   scene.background = new Color(Config.scene.background);
-  scene.fog = new FogExp2(Config.fog.color, Config.fog.near / Config.block.count);
-  
+  scene.fog = new FogExp2(
+    Config.fog.color,
+    Config.fog.near / Config.block.count
+  );
+
   const stats = new Stats();
   container.appendChild(stats.dom);
 
@@ -130,7 +134,8 @@ export default function () {
   const audio3 = new Audio(listener);
 
   const particles = new Particles(scene, listener);
-  // particles.start();
+  const particles2 = new ParticlesSpark(scene, listener);
+  // particles2.start();
 
   const url = new URL(window.location.href);
   const c = url.searchParams.get("lights") || Config.block.count;
@@ -140,6 +145,7 @@ export default function () {
     if (i === 0) {
       const block = new Block(i, audio);
       blocks.push(block);
+      block.superTest(particles2);
       scene.add(block.mesh);
     } else {
       const block = new Block(i);
@@ -210,6 +216,7 @@ export default function () {
     TWEEN.update();
     stats.update();
     particles.update(delta);
+    particles2.update(delta);
     ic.update(delta);
     controls.update();
   }

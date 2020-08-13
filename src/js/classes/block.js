@@ -99,6 +99,24 @@ export default class Block {
       this.button = junction_box.userData.button;
     }
 
+    this.superTest = function (particles) {
+      this.superParticle = particles;
+      const x = junction_box.position.x;
+      const y = junction_box.position.y;
+      const z = junction_box.position.z;
+      this.superParticle.particleGroup.emitters.forEach((e) => {
+        // e.position.value.set(x, y-1.15, z); // bottom hole
+        // e.position.value.set(x, y-0.8, z); // top schlitz
+        e.position.value.set(x, y - 1.3, z); // top schlitz
+        /* eslint-disable no-self-assign */
+        e.position.value = e.position.value;
+      });
+
+      // this.superParticle.particleGroup.emitters[0].position.value.set(x, y-1.15, z);
+      // this.superParticle.particleGroup.emitters[0].position.value = this.superParticle.particleGroup.emitters[0].position.value;
+      this.spark = particles.start;
+    };
+
     let turnLight = false;
     // add every X blocks an alarm light
     if (counter % 3 === 0) {

@@ -184,6 +184,10 @@ export default class UserInterface {
                             <td> felixmariotto </td>
                             <td><a href="https://github.com/felixmariotto/three-screenshake" target="_blank">Camera Shake</a></td>
                         </tr>
+                        <tr>
+                            <td> squashy555 </td>
+                            <td><a href="https://freesound.org/people/squashy555/sounds/256915/" target="_blank">Arc Welding</a></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

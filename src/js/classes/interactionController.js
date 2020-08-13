@@ -44,12 +44,14 @@ export default class InteractionController {
 
     hud.playButton.onclick = () => {
       tunnelblocks[0].button.userData.move(false);
+      tunnelblocks[0].spark();
       play();
     };
 
     hud.resetButton.onclick = () => {
       reverse();
       tunnelblocks[0].button.userData.move(true);
+      tunnelblocks[0].spark();
       play();
     };
 
@@ -157,10 +159,12 @@ export default class InteractionController {
         // push button
         if (blocks.length === 0 || !toggle) {
           intersects[0].object.userData.move(true);
+          tunnelblocks[0].spark();
           reverse();
           play();
         } else {
           intersects[0].object.userData.move(false);
+          tunnelblocks[0].spark();
           play();
         }
       }
