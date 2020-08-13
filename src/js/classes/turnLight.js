@@ -54,6 +54,14 @@ export default class TurnLight {
     const bulb = new Mesh(darkSide, [lightMaterial, darkMaterial]);
     // light.geometry.faces.forEach(function(face) {face.materialIndex = 0; console.log("fa", face)});
     bulb.position.set(0, -size, 0);
+    const tempVec = new Vector3();
+    bulb.userData.update = function(delta) {
+      bulb.lookAt(
+        spotLight.target.getWorldPosition(tempVec).x,
+        ypos - 0.5,
+        spotLight.target.getWorldPosition(tempVec).z
+      );
+    }
 
     const baseMat = new MeshLambertMaterial({
       color: 0x888888,
@@ -68,7 +76,6 @@ export default class TurnLight {
     base.position.set(tlc.position.x, ypos, tlc.position.z);
     base.matrixAutoUpdate = false;
     base.updateMatrix();
-    const tempVec = new Vector3();
 
     this.on = function () {
       lightMaterial.emissive.setHex(tlc.material.emissive);
@@ -85,11 +92,7 @@ export default class TurnLight {
     this.update = function (delta) {
       if (!this.turning) return;
       spotLight.userData.update(delta);
-      bulb.lookAt(
-        spotLight.target.getWorldPosition(tempVec).x,
-        ypos - 0.5,
-        spotLight.target.getWorldPosition(tempVec).z
-      );
+      bulb.userData.update(delta);
       // bulb.lookAt(spotLight.target.getWorldPosition(tempVec));
     };
   }
