@@ -55,13 +55,13 @@ export default class TurnLight {
     // light.geometry.faces.forEach(function(face) {face.materialIndex = 0; console.log("fa", face)});
     bulb.position.set(0, -size, 0);
     const tempVec = new Vector3();
-    bulb.userData.update = function(delta) {
+    bulb.userData.update = function () {
       bulb.lookAt(
         spotLight.target.getWorldPosition(tempVec).x,
         ypos - 0.5,
         spotLight.target.getWorldPosition(tempVec).z
       );
-    }
+    };
 
     const baseMat = new MeshLambertMaterial({
       color: 0x888888,
