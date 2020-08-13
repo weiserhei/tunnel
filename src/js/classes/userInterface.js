@@ -16,7 +16,7 @@ import Config from "../../data/config";
 
 library.add(faExpandArrowsAlt);
 
-export default class Hud {
+export default class UserInterface {
   constructor(container) {
     const div = document.createElement("div");
     div.className =

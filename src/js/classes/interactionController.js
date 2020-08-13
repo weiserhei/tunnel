@@ -1,7 +1,7 @@
 import { Raycaster, Vector2 } from "three";
 import $ from "jquery";
 
-import Hud from "./hud";
+import userInterface from "./userInterface";
 
 function toggleFullScreen() {
   // https://developers.google.com/web/fundamentals/native-hardware/fullscreen/
@@ -40,7 +40,7 @@ export default class InteractionController {
     raycaster.layers.set(1);
     const vector = new Vector2();
 
-    const hud = new Hud(container);
+    const hud = new userInterface(container);
 
     hud.playButton.onclick = () => {
       tunnelblocks[0].button.userData.move(false);
