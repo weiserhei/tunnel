@@ -9,9 +9,9 @@
 A three.js experiment with Rectangle-Area-Lights.
 
 ## Demo
-[![demo](/ogimage.jpg)](http://weiserhei.github.io/tunnel/dist/)
+[![demo](/ogimage.jpg)](http://weiserhei.github.io/tunnel/)
 
-http://weiserhei.github.io/tunnel/dist/
+http://weiserhei.github.io/tunnel/
 
 ### Quickstart
 
